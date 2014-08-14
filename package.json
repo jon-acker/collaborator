@@ -2,14 +2,14 @@
   "name": "collaborator",
   "version": "0.0.1",
   "description": "Provides a simple mechanism for using requirejs a DIC to provide jasmine spies to module specs",
-  "main": "index.js",
+  "main": "plugin.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "grunt": "0.4.4",
-    "grunt-contrib-jasmine": "~0.5.3",
-    "grunt-template-jasmine-requirejs": "~0.1.10"
+	  "grunt": "^0.4.5",
+	  "grunt-contrib-jasmine": "^0.6.5",
+	  "grunt-template-jasmine-requirejs": "^0.2.0"
   },
   "repository": "",
   "keywords": [
