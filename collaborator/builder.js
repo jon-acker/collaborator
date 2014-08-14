@@ -14,7 +14,6 @@ define(['collaborator/definer'], function(definer) {
                 dependencyMap[moduleName][requiredModule] = DOUBLES_PREFIX + requiredModule;
             });
         });
-		console.log(JSON.stringify(dependencyMap));
 
         return dependencyMap;
     }

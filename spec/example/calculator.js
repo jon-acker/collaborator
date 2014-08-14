@@ -1,4 +1,4 @@
-define(['double/parser', 'example/calculator'], function(parser, calculator) {
+define(['collaborator!parser', 'example/calculator'], function(parser, calculator) {
 
 	describe('Calculator Module', function() {
 
