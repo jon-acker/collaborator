@@ -1,7 +1,7 @@
 {
-  "name": "collaborator",
+  "name": "requirejs-collaborator",
   "version": "0.0.1",
-  "description": "Provides a simple mechanism for using requirejs a DIC to provide jasmine spies to module specs",
+  "description": "Requirejs plugin which provides a simple mechanism for using requirejs a DI container to provide jasmine spies to module specs",
   "main": "plugin.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
