@@ -6,12 +6,18 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "devDependencies": {
-	  "grunt": "^0.4.5",
-	  "grunt-contrib-jasmine": "^0.6.5",
-	  "grunt-template-jasmine-requirejs": "^0.2.0"
+  "dependencies": {
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jasmine": "^0.6.5",
+    "grunt-template-jasmine-requirejs": "^0.2.0"
   },
-  "repository": "",
+  "repository": {
+    "url": "https://github.com/jon-acker/collaborator"
+  },
+  "bin": {
+    "grunt": "node_modules/grunt-cli/bin/grunt"
+  },
   "keywords": [
     "requirejs",
     "mock",
