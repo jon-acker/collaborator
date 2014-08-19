@@ -6,22 +6,35 @@ grunt-spec
 
 Generate spec files in the relevant folder using grunt spec plugin
 ```
-grunt spec:namepspace/module
+grunt spec:namepspace/calculator
 ```
+This will create a new AMD spec file in spec/namespace/calculator.js
+
 
 To run "grunt", either install globally with "npm install -g grunt-cli" or run locally with:
 ```
 node_modules/.bin/grunt
 ```
 
-In the spec itself, use the spec! requirejs plugin to force creating of module that doesn't exist yet:
+In the spec itself, use the spec! requirejs plugin to force creating of module that doesn't exist yet. The following spec will be created by grunt spec:
 ```javascript
-define(['spec!calculator'], function(calculator) {
-    describe('Calculator', function() {
-        it('is a Calculator', function() {
-            expect(something).toBe(whatever);
+define(['spec!namespace/calculator'], function(calculator) {
+    describe('Namespace Calculator', function() {
+        it('is an instance of Calculator', function() {
+            expect(calculator.constructor.name).toBe('Calculator');
         });
     });
+});
+```
+
+On running "grunt jasmine", the spec! requirejs plugin will cause a calculator module to be created in src/namespace/caculator.js if none exists yet. The default pattern is an object factory which will look like this:
+```javascript
+define(function() {
+    function Calculator() {
+        //@todo: create methods here
+    }
+
+    return new Calculator();
 });
 ```
 
