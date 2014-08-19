@@ -30,7 +30,7 @@ Specify the names of the collaborators methods explicitly, and a jasmine spy wil
 If you use 'null' for the method names, an existing module will be expected to be found in the src/ directory.
 
 ```javascript
-define(['collaborator!parser', spec!calculator'], function(calculator) {
+define(['collaborator!parser', 'spec!calculator'], function(calculator) {
     describe('Calculator', function() {
         it('is a Calculator', function() {
             expect(something).toBe(whatever);
@@ -39,12 +39,12 @@ define(['collaborator!parser', spec!calculator'], function(calculator) {
 });
 ```
 
-Specifiy all expected collaborators in the file collaborators.js:
+Specifiy all expected collaborators and their methods in the file collaborators.js:
 ```javascript
 define(function() {
     return {
         '*': {
-            parser: ['parser']
+            parser: ['parse']
         }
     };
 });
