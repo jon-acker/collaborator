@@ -9,6 +9,11 @@ Generate spec files in the relevant folder using grunt spec plugin
 grunt spec:namepspace/module
 ```
 
+To run "grunt", either install globally with "npm install -g grunt-cli" or run locally with:
+```
+node_modules/.bin/grunt
+```
+
 In the spec itself, use the spec! requirejs plugin to force creating of module that doesn't exist yet:
 ```javascript
 define(['spec!calculator'], function(calculator) {
@@ -48,9 +53,9 @@ define(function() {
         }
     };
 });
+```
 
-
-To install the required modules run
+To install the required modules run:
 ```
 npm install
 ```
