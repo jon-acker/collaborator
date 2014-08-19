@@ -10,7 +10,7 @@ grunt spec:namepspace/module
 ```
 
 In the spec itself, use the spec! requirejs plugin to force creating of module that doesn't exist yet:
-```
+```javascript
 define(['spec!calculator'], function(calculator) {
     describe('Calculator', function() {
         it('is a Calculator', function() {
@@ -29,7 +29,7 @@ Edit the file collaborators.js to provide a definition of your tests collaborato
 Specify the names of the collaborators methods explicitly, and a jasmine spy will be created for them.
 If you use 'null' for the method names, an existing module will be expected to be found in the src/ directory.
 
-```
+```javascript
 define(['collaborator!parser', spec!calculator'], function(calculator) {
     describe('Calculator', function() {
         it('is a Calculator', function() {
@@ -38,6 +38,17 @@ define(['collaborator!parser', spec!calculator'], function(calculator) {
     });
 });
 ```
+
+Specifiy all expected collaborators in the file collaborators.js:
+```javascript
+define(function() {
+    return {
+        '*': {
+            parser: ['parser']
+        }
+    };
+});
+
 
 To install the required modules run
 ```
