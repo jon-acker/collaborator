@@ -50,7 +50,7 @@ If you use 'null' for the method names, an existing module will be expected to b
 ```javascript
 define(['collaborator!acme/parser', 'spec!acme/calculator'], function(calculator) {
     describe('Calculator', function() {
-        it('is caculates something', function() {
+        it('parses the input and calculates value of string', function() {
             parser.parse.and.returnValue([1, 2]);
         
             expect(calculator.sum('1 2')).toBe(3);
