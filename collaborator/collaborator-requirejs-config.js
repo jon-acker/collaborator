@@ -2,6 +2,7 @@ require.config({
     baseUrl: 'src/',
 	paths: {
 		collaborator: '../collaborator/plugin',
+		spec: '../collaborator/spec',
 		'collaborator/definer': '../collaborator/definer',
 		'collaborators': '../collaborators',
 		'collaborator/builder': '../collaborator/builder'

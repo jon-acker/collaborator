@@ -1,15 +1,18 @@
 {
-  "name": "requirejs-collaborator",
+  "name": "grunt-spec",
   "version": "0.0.1",
   "description": "Requirejs plugin which provides a simple mechanism for using requirejs a DI container to provide jasmine spies to module specs",
   "main": "plugin.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "devDependencies": {
-	  "grunt": "^0.4.5",
-	  "grunt-contrib-jasmine": "^0.6.5",
-	  "grunt-template-jasmine-requirejs": "^0.2.0"
+  "dependencies": {
+    "chalk": "^0.5.1",
+    "grunt": "^0.4.5",
+    "grunt-contrib-jasmine": "^0.6.5",
+    "grunt-lib-phantomjs": "^0.6.0",
+    "grunt-template-jasmine-requirejs": "^0.2.0",
+    "readline-sync": "^0.4.5"
   },
   "repository": "",
   "keywords": [
@@ -18,7 +21,8 @@
     "jasmine",
     "double",
     "test",
-    "grunt"
+    "grunt",
+    "spec"
   ],
   "author": "Jon Acker",
   "license": "BSD"
