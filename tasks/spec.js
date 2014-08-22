@@ -1,6 +1,21 @@
 'use strict';
 
 module.exports = function(grunt) {
+	grunt.initConfig({
+		jasmine : {
+			src : ['src/**/*.js'],
+			options : {
+				keepRunner: true,
+				specs : 'spec/**/*.js',
+				template: require('grunt-template-jasmine-requirejs'),
+				templateOptions: {
+					requireConfigFile: 'collaborator/collaborator-requirejs-config.js',
+					requireConfig: { }
+				}
+			}
+		}
+	});
+
 	var chalk = require('chalk');
 	var readline = require('readline-sync');
 	var readYaml = require('read-yaml');
@@ -31,7 +46,7 @@ module.exports = function(grunt) {
 			formattedCollaborators += index < Object.keys(collaborators).length -1 ? ",\n" : "";
 		});
 
-		grunt.file.write('collaborators.js', "define({\n" + formattedCollaborators + "\n});\n");
+		grunt.file.write('collaborator/collaborators.js', "define({\n" + formattedCollaborators + "\n});\n");
 	}
 
 	grunt.event.once('jasmine.specDone', function(event) {

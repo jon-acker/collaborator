@@ -4,7 +4,7 @@ require.config({
 		collaborator: '../collaborator/plugin',
 		spec: '../collaborator/spec',
 		'collaborator/definer': '../collaborator/definer',
-		'collaborators': '../collaborators',
+		'collaborators': '../collaborator/collaborators',
 		'collaborator/builder': '../collaborator/builder'
 	},
     deps: [
