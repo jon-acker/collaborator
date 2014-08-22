@@ -7,11 +7,11 @@ define(['collaborator/definer'], function(definer) {
         var dependencyMap = {};
 
         Object.keys(collaborators).forEach(function(moduleName) {
-            dependencyMap[moduleName] = dependencyMap[moduleName] || {};
+            dependencyMap['*'] = dependencyMap[moduleName] || {};
 
-            Object.keys(collaborators[moduleName]).forEach(function(requiredModule) {
-                definer.defineDouble(requiredModule, collaborators[moduleName][requiredModule], DOUBLES_PREFIX);
-                dependencyMap[moduleName][requiredModule] = DOUBLES_PREFIX + requiredModule;
+            Object.keys(collaborators).forEach(function(requiredModule) {
+                definer.defineDouble(requiredModule, collaborators[requiredModule], DOUBLES_PREFIX);
+                dependencyMap['*'][requiredModule] = DOUBLES_PREFIX + requiredModule;
             });
         });
 

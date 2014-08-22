@@ -1,6 +1,5 @@
 module.exports = function(grunt) {
     'use strict';
-
     // Project configuration.
     grunt.initConfig({
         jasmine : {
@@ -17,8 +16,8 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-contrib-jasmine');
+	grunt.loadTasks('tasks');
 
-    grunt.registerTask('default', ['jasmine']);
-
+	grunt.loadNpmTasks('grunt-contrib-jasmine');
+	grunt.loadNpmTasks('grunt-contrib-spec');
 };
