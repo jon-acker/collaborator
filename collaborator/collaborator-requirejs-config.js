@@ -1,11 +1,11 @@
 require.config({
     baseUrl: 'src/',
 	paths: {
-		collaborator: '../collaborator/plugin',
-		spec: '../collaborator/spec',
-		'collaborator/definer': '../collaborator/definer',
-		'collaborators': '../collaborator/collaborators',
-		'collaborator/builder': '../collaborator/builder'
+		collaborator: '../node_modules/grunt-spec/collaborator/plugin',
+		spec: '../node_modules/grunt-spec/collaborator/spec',
+		'collaborator/definer': '../node_modules/grunt-spec/collaborator/definer',
+		'collaborators': '../node_modules/grunt-spec/collaborator/collaborators',
+		'collaborator/builder': '../node_modules/grunt-spec/collaborator/builder'
 	},
     deps: [
         'collaborators',
