@@ -1,6 +1,15 @@
 'use strict';
 
 module.exports = function(grunt) {
+
+	if (grunt.file.exists('node_modules/grunt-spec')) {
+		grunt.config('grunt-spec-config', 'node_modules/grunt-spec/collaborator/collaborator-requirejs-config.js');
+	} else {
+		grunt.config('grunt-spec-config', 'collaborator/collaborator-requirejs-config-dev.js');
+	}
+
+	grunt.loadNpmTasks('grunt-contrib-jasmine');
+
 	grunt.initConfig({
 		jasmine : {
 			src : ['src/**/*.js'],
@@ -9,7 +18,7 @@ module.exports = function(grunt) {
 				specs : 'spec/**/*.js',
 				template: require('grunt-template-jasmine-requirejs'),
 				templateOptions: {
-					requireConfigFile: 'collaborator/collaborator-requirejs-config.js',
+					requireConfigFile: grunt.config('grunt-spec-config'),
 					requireConfig: { }
 				}
 			}
