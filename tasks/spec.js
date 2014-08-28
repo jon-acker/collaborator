@@ -3,7 +3,7 @@
 module.exports = function(grunt) {
 
 	grunt.config('grunt-spec-config', 'node_modules/grunt-spec/collaborator/collaborator-requirejs-config.js');
-
+	grunt.loadNpmTasks('grunt-contrib-jasmine');
 	grunt.initConfig({
 		jasmine : {
 			src : [],
