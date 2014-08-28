@@ -84,7 +84,7 @@ module.exports = function(grunt) {
 			formattedCollaborators += index < Object.keys(collaborators).length -1 ? ",\n" : "";
 		});
 
-		grunt.file.write('collaborator/collaborators.js', "define({\n" + formattedCollaborators + "\n});\n");
+		grunt.file.write('node_modules/grunt-spec/collaborator/collaborators.js', "define({\n" + formattedCollaborators + "\n});\n");
 	}
 
 	grunt.event.on('jasmine.specDone', function(event) {
