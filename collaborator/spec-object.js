@@ -3,11 +3,11 @@ define(function() {
 
     return {
         load: function(requiredModule, req, loader, config) {
-			requiredModule = requiredModule.replace('double/', 'src/');
-			req([requiredModule], function (module) {
+			var modulePath = 'src/' + requiredModule;
+			req([modulePath], function (module) {
 				loader(module);
 			}, function (e) {
-				throw JSON.stringify({error: 'E_NOENT_FACTORY', file: e.requireModules[0]});
+				throw JSON.stringify({error: 'E_NOENT_OBJECT', file: requiredModule});
 			});
 
 		}

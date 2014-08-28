@@ -89,6 +89,7 @@ module.exports = function(grunt) {
 
 	grunt.event.on('jasmine.specDone', function(event) {
 		var matches;
+
 		if (event.status === 'failed' && (matches = event.failedExpectations[0].message.match(/is not a function \(evaluating \'(\w+)\.(\w+)\(\)/))) {
 			grunt.log.writeln(chalk.red.bold('\n\nYour '+ chalk.green(matches[1]) +  ' doesn\'t seem to have a method called '+ chalk.green(matches[2]) + '.\n'));
 			process.exit();
@@ -127,7 +128,7 @@ module.exports = function(grunt) {
 					var moduleName = event.file.split('\/').pop();
 					var moduleNameUC = moduleName.charAt(0).toUpperCase() + moduleName.slice(1);
 
-					grunt.file.write(event.file + '.js',
+					grunt.file.write('src/' + event.file + '.js',
 						"define(function() {\n" +
 						"\n" +
 						"    function " + moduleNameUC + "() {\n" +

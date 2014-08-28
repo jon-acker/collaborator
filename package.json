@@ -1,6 +1,6 @@
 {
   "name": "grunt-spec",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Requirejs plugin which provides a simple mechanism for using requirejs a DI container to provide jasmine spies to module specs",
   "main": "plugin.js",
   "scripts": {
