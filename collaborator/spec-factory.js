@@ -3,11 +3,13 @@ define(function() {
 
     return {
         load: function(requiredModule, req, loader, config) {
+			requiredModule = requiredModule.replace('double/', 'src/');
 			req([requiredModule], function (module) {
 				loader(module);
-			}, function(e) {
-				console.log('collaborator "'+ requiredModule + '" doesn\'t seem to exist yet');
+			}, function (e) {
+				throw JSON.stringify({error: 'E_NOENT_FACTORY', file: e.requireModules[0]});
 			});
-        }
+
+		}
     }
 });

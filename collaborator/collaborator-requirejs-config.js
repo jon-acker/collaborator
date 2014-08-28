@@ -13,7 +13,7 @@ require.config({
     ],
     callback: function(collaborators, collaboratorBuilder) {
         require.config({
-            map: collaboratorBuilder.createDependencyMap(collaborators)
+            map: {}//collaboratorBuilder.createDependencyMap(collaborators)
         });
     }
 });

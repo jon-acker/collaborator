@@ -2,17 +2,16 @@
 
 module.exports = function(grunt) {
 
-	if (grunt.file.exists('node_modules/grunt-spec')) {
-		grunt.config('grunt-spec-config', 'node_modules/grunt-spec/collaborator/collaborator-requirejs-config.js');
-	} else {
+//	if (grunt.file.exists('node_modules/grunt-spec')) {
+//		grunt.config('grunt-spec-config', 'node_modules/grunt-spec/collaborator/collaborator-requirejs-config.js');
+//	} else {
 		grunt.config('grunt-spec-config', 'collaborator/collaborator-requirejs-config-dev.js');
-	}
+//	}
 
-	grunt.loadNpmTasks('grunt-contrib-jasmine');
 
 	grunt.initConfig({
 		jasmine : {
-			src : ['src/**/*.js'],
+			src : [],
 			options : {
 				keepRunner: true,
 				specs : 'spec/**/*.js',
@@ -30,10 +29,17 @@ module.exports = function(grunt) {
 	var readYaml = require('read-yaml');
 	var jsYaml = require('js-yaml');
 
-	function writeSpec(specFilename, specName, moduleName, capitalizedNamespaceParts) {
+	/**
+	 *
+	 * @param specFilename
+	 * @param specName
+	 * @param moduleName
+	 * @param capitalizedNamespaceParts
+	 */
+	function writeFactorySpec(specFilename, specName, moduleName, capitalizedNamespaceParts) {
 		var moduleNameUC = capitalizedNamespaceParts[capitalizedNamespaceParts.length-1];
 		grunt.file.write(specFilename,
-			"define(['spec!" + specName + "'], function(" + moduleName + ") {\n" +
+			"define(['spec-factory!" + specName + "'], function(" + moduleName + ") {\n" +
 				"\n" +
 				"    describe('" + capitalizedNamespaceParts.join(' ') + "', function() {\n" +
 				"\n" +
@@ -47,6 +53,34 @@ module.exports = function(grunt) {
 		);
 	}
 
+	/**
+	 *
+	 * @param specFilename
+	 * @param specName
+	 * @param moduleName
+	 * @param namespaceParts
+	 */
+	function writeModuleSpec(specFilename, specName, moduleName, namespaceParts) {
+		grunt.file.write(specFilename,
+			"define(['spec-module!" + specName + "'], function(" + moduleName + ") {\n" +
+				"\n" +
+				"    describe('" + namespaceParts.join(' ') + "', function() {\n" +
+				"\n" +
+				"        it('is an instance of object', function() {\n" +
+				"            expect(typeof " + moduleName + ").toBe('object');\n" +
+				"        });\n" +
+				"\n" +
+				"    });\n" +
+				"\n" +
+				"});\n"
+		);
+	}
+
+	/**
+	 * Create collaborators js from yaml file
+	 *
+	 * @param collaborators
+	 */
 	function writeCollaborators(collaborators) {
 		var formattedCollaborators = '';
 		collaborators = collaborators || {};
@@ -58,64 +92,81 @@ module.exports = function(grunt) {
 		grunt.file.write('collaborator/collaborators.js', "define({\n" + formattedCollaborators + "\n});\n");
 	}
 
-	grunt.event.once('jasmine.specDone', function(event) {
+	grunt.event.on('jasmine.specDone', function(event) {
 		var matches;
-		if (event.status === 'failed' && (matches = event.failedExpectations[0].message.match(/is not a function \(evaluating \'(\w+)\.(\w+\(\))/))) {
-			grunt.log.writeln(chalk.red.bold('You don\'t seem to have a method called '+matches[2]+' in your '+matches[1]));
+		if (event.status === 'failed' && (matches = event.failedExpectations[0].message.match(/is not a function \(evaluating \'(\w+)\.(\w+)\(\)/))) {
+			grunt.log.writeln(chalk.red.bold('\n\nYour '+ chalk.green(matches[1]) +  ' doesn\'t seem to have a method called '+ chalk.green(matches[2]) + '.\n'));
 			process.exit();
 		}
 	});
 
-
 	grunt.event.once('error.onError', function(event) {
 		if (typeof event === 'string') {
 
-			var matches
-			if (matches = event.match(/Illegal path or script error: \[\'(.*)\'\]/)) {
-				grunt.log.writeln(chalk.white.bold.bgRed('Non existent module or collaborator: "' + matches[1]+'"\n'));
-
-				var answer = readline.question([
-					chalk.white.bgBlue('Would you like me to set up a collaborator interface for "'+matches[1]+'" ?'),
-					"[Y/n]\n"
-				]);
-
-				if ((answer.toUpperCase() === 'Y')) {
-					var collaborators = grunt.file.readYAML('collaborators.yml');
-					collaborators = collaborators || {};
-					collaborators[matches[1]] = ['method'];
-					grunt.file.write('collaborators.yml', jsYaml.safeDump(collaborators, {flowLevel: 1}));
-					grunt.log.writeln(chalk.blue('Collaborator interface  '+matches[1]+' creates. Run grunt:run again'))
-				}
-
-				process.exit(0);
-			}
-
 			event = JSON.parse(event);
 
-			if (event.error === 'E_NOENT') {
+			switch (event.error) {
+				case 'E_NOENT_COLLABORATOR':
+					event.file = event.file.replace('double/', '');
+					grunt.log.writeln(chalk.white.bold.bgRed('Non existent module or collaborator: "' + event.file+'"\n'));
 
-				grunt.log.writeln(chalk.bold.red('Module not found: ') + chalk.bold.grey(event.file));
-				grunt.log.writeln(chalk.bold.red('Creating new module...file ') + chalk.bold.grey(event.file));
-				grunt.log.writeln('---');
+					var answer = readline.question([
+						chalk.white.bgBlue('Would you like me to set up a collaborator/spy?'),
+						"[Y/n]\n"
+					]);
 
-				var moduleName = event.file.split('\/').pop();
-				var moduleNameUC = moduleName.charAt(0).toUpperCase() + moduleName.slice(1);
+					if ((answer.toUpperCase() === 'Y')) {
+						var collaborators = grunt.file.readYAML('collaborators.yml');
+						collaborators = collaborators || {};
+						collaborators[event.file] = ['method'];
+						grunt.file.write('collaborators.yml', jsYaml.safeDump(collaborators, {flowLevel: 1}));
+						grunt.log.writeln(chalk.blue('Collaborator interface  '+event.file+' created. Run grunt:run again'))
+					}
+					break;
 
-				grunt.file.write('src/' + event.file + '.js',
-					"define(function() {\n" +
-				    "\n" +
-					"    function " + moduleNameUC + "() {\n" +
-					"\n" +
-				    "        //@todo: create methods here\n" +
-					"\n" +
-					"    }\n" +
-					"\n" +
-					"    return new " + moduleNameUC + "();\n" +
-					"});\n"
-				);
+				case 'E_NOENT_MODULE':
+					grunt.log.writeln(chalk.bold.red('Factory not found: ') + chalk.bold.grey(event.file));
+					grunt.log.writeln(chalk.bold.red('Creating new factory...file ') + chalk.bold.grey(event.file));
+					grunt.log.writeln('---');
 
-				process.exit(0);
+					var moduleName = event.file.split('\/').pop();
+					var moduleNameUC = moduleName.charAt(0).toUpperCase() + moduleName.slice(1);
+
+					grunt.file.write('src/' + event.file + '.js',
+						"define(function() {\n" +
+						"\n" +
+						"    function " + moduleNameUC + "() {\n" +
+						"\n" +
+						"        //@todo: create methods here\n" +
+						"\n" +
+						"    }\n" +
+						"\n" +
+						"    return new " + moduleNameUC + "();\n" +
+						"});\n"
+					);
+					break;
+
+				case 'E_NOENT_OBJECT':
+					grunt.log.writeln(chalk.bold.red('Module not found: ') + chalk.bold.grey(event.file));
+					grunt.log.writeln(chalk.bold.red('Creating new AMD file ') + chalk.bold.grey(event.file));
+					grunt.log.writeln('---');
+
+					grunt.file.write('src/' + event.file + '.js',
+						"define(function() {\n" +
+							"\n" +
+							"    return {\n" +
+							"\n" +
+							"        //@todo: create methods here\n" +
+							"\n" +
+							"    }\n" +
+							"\n" +
+							"});\n"
+					);
+					break;
 			}
+
+			process.exit(0);
+
 		}
 	});
 
@@ -129,10 +180,10 @@ module.exports = function(grunt) {
 				}
 
 				writeCollaborators(grunt.file.readYAML('collaborators.yml'));
+
 				grunt.task.run('jasmine');
 				break;
 
-			// describe and/or create spec file
 			case 'module':
 				var specFilename = 'spec/' + specName + '.js';
 				var namespaceParts = specName.split('/');
@@ -152,8 +203,30 @@ module.exports = function(grunt) {
 				}
 
 				if (typeof answer === 'undefined' || answer.toUpperCase() === 'Y') {
-					grunt.log.writeln(chalk.white.bgRed('Creating spec in: ' + specFilename));
-					writeSpec(specFilename, specName, moduleName, capitalizedNamespaceParts);
+					grunt.log.writeln(chalk.white.bgBlue('Creating factory spec in: ' + specFilename));
+					writeFactorySpec(specFilename, specName, moduleName, capitalizedNamespaceParts);
+				}
+				break;
+
+
+			case 'object':
+				var specFilename = 'spec/' + specName + '.js';
+				var namespaceParts = specName.split('/');
+				var moduleName = namespaceParts[namespaceParts.length - 1];
+
+				if (grunt.file.exists(specFilename)) {
+
+					var answer = readline.question([
+						chalk.white.bgBlue('The file '+specFilename+' already exists, would you like to overwrite it?'),
+						'[y/N]'
+					]);
+
+					(answer.toUpperCase() === 'Y') && grunt.file.delete(specFilename);
+				}
+
+				if (typeof answer === 'undefined' || answer.toUpperCase() === 'Y') {
+					grunt.log.writeln(chalk.white.bgBlue('Creating module in: ' + specFilename));
+					writeModuleSpec(specFilename, specName, moduleName, namespaceParts);
 				}
 				break;
 		}
