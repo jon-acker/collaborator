@@ -2,12 +2,7 @@
 
 module.exports = function(grunt) {
 
-//	if (grunt.file.exists('node_modules/grunt-spec')) {
-//		grunt.config('grunt-spec-config', 'node_modules/grunt-spec/collaborator/collaborator-requirejs-config.js');
-//	} else {
-		grunt.config('grunt-spec-config', 'collaborator/collaborator-requirejs-config-dev.js');
-//	}
-
+	grunt.config('grunt-spec-config', 'collaborator/collaborator-requirejs-config-dev.js');
 
 	grunt.initConfig({
 		jasmine : {
@@ -36,10 +31,10 @@ module.exports = function(grunt) {
 	 * @param moduleName
 	 * @param capitalizedNamespaceParts
 	 */
-	function writeFactorySpec(specFilename, specName, moduleName, capitalizedNamespaceParts) {
+	function writeModuleSpec(specFilename, specName, moduleName, capitalizedNamespaceParts) {
 		var moduleNameUC = capitalizedNamespaceParts[capitalizedNamespaceParts.length-1];
 		grunt.file.write(specFilename,
-			"define(['spec-factory!" + specName + "'], function(" + moduleName + ") {\n" +
+			"define(['spec-module!" + specName + "'], function(" + moduleName + ") {\n" +
 				"\n" +
 				"    describe('" + capitalizedNamespaceParts.join(' ') + "', function() {\n" +
 				"\n" +
@@ -60,9 +55,9 @@ module.exports = function(grunt) {
 	 * @param moduleName
 	 * @param namespaceParts
 	 */
-	function writeModuleSpec(specFilename, specName, moduleName, namespaceParts) {
+	function writeObjectSpec(specFilename, specName, moduleName, namespaceParts) {
 		grunt.file.write(specFilename,
-			"define(['spec-module!" + specName + "'], function(" + moduleName + ") {\n" +
+			"define(['spec-object!" + specName + "'], function(" + moduleName + ") {\n" +
 				"\n" +
 				"    describe('" + namespaceParts.join(' ') + "', function() {\n" +
 				"\n" +
@@ -125,14 +120,14 @@ module.exports = function(grunt) {
 					break;
 
 				case 'E_NOENT_MODULE':
-					grunt.log.writeln(chalk.bold.red('Factory not found: ') + chalk.bold.grey(event.file));
-					grunt.log.writeln(chalk.bold.red('Creating new factory...file ') + chalk.bold.grey(event.file));
+					grunt.log.writeln(chalk.bold.red('Module not found: ') + chalk.bold.grey(event.file));
+					grunt.log.writeln(chalk.bold.red('Creating new module in file ') + chalk.bold.grey(event.file));
 					grunt.log.writeln('---');
 
 					var moduleName = event.file.split('\/').pop();
 					var moduleNameUC = moduleName.charAt(0).toUpperCase() + moduleName.slice(1);
 
-					grunt.file.write('src/' + event.file + '.js',
+					grunt.file.write(event.file + '.js',
 						"define(function() {\n" +
 						"\n" +
 						"    function " + moduleNameUC + "() {\n" +
@@ -147,8 +142,8 @@ module.exports = function(grunt) {
 					break;
 
 				case 'E_NOENT_OBJECT':
-					grunt.log.writeln(chalk.bold.red('Module not found: ') + chalk.bold.grey(event.file));
-					grunt.log.writeln(chalk.bold.red('Creating new AMD file ') + chalk.bold.grey(event.file));
+					grunt.log.writeln(chalk.bold.red('Object not found: ') + chalk.bold.grey(event.file));
+					grunt.log.writeln(chalk.bold.red('Creating new AMD object file ') + chalk.bold.grey(event.file));
 					grunt.log.writeln('---');
 
 					grunt.file.write('src/' + event.file + '.js',
@@ -203,8 +198,8 @@ module.exports = function(grunt) {
 				}
 
 				if (typeof answer === 'undefined' || answer.toUpperCase() === 'Y') {
-					grunt.log.writeln(chalk.white.bgBlue('Creating factory spec in: ' + specFilename));
-					writeFactorySpec(specFilename, specName, moduleName, capitalizedNamespaceParts);
+					grunt.log.writeln(chalk.white.bgBlue('Creating module spec in: ' + specFilename));
+					writeModuleSpec(specFilename, specName, moduleName, capitalizedNamespaceParts);
 				}
 				break;
 
@@ -225,8 +220,8 @@ module.exports = function(grunt) {
 				}
 
 				if (typeof answer === 'undefined' || answer.toUpperCase() === 'Y') {
-					grunt.log.writeln(chalk.white.bgBlue('Creating module in: ' + specFilename));
-					writeModuleSpec(specFilename, specName, moduleName, namespaceParts);
+					grunt.log.writeln(chalk.white.bgBlue('Creating object in: ' + specFilename));
+					writeObjectSpec(specFilename, specName, moduleName, namespaceParts);
 				}
 				break;
 		}

@@ -1,5 +1,4 @@
 require.config({
-//    baseUrl: 'src/',
 	paths: {
 		collaborator: 'collaborator/collaborator',
 		'spec-module': 'collaborator/spec-module',
