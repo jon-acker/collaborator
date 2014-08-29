@@ -17,7 +17,7 @@ module.exports = function(grunt) {
 
 To install the required modules run:
 ```
-npm install
+npm install grunt-spec
 ```
 
 grunt-spec
