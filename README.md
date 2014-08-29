@@ -27,20 +27,21 @@ Generate spec files in the relevant folder using grunt spec plugin
 
 There are currently only two AMD patterns supported:
 
-object:
+#### object: plain object or anon service
 ```
 grunt spec:object:acme/calculator
 ```
 This will create a new AMD spec file in spec/namespace/calculator.js returning {}
 
-module:
+#### module constructed class of specific type
 ```
 grunt spec:module:acme/button
 ```
 This will create a new AMD spec file in spec/namespace/button.js
 
 
-In the spec itself, use the spec-module! or spec-object! requirejs plugin to force creating of module that doesn't exist yet. The following spec will be created by grunt spec:
+
+The following spec will be created by grunt spec:
 ```javascript
 define(['spec-module!acme/button'], function(button) {
     describe('Namespace Button', function() {
@@ -51,7 +52,15 @@ define(['spec-module!acme/button'], function(button) {
 });
 ```
 
-On running "grunt jasmine", the spec! requirejs plugin will cause a button module to be created in src/namespace/button.js if none exists yet. The default pattern is an object factory which will look like this:
+The spec-module! and the spec-object! requirejs plugin to force creating of module that doesn't exist yet.
+
+Now run
+```
+grunt spec:run
+```
+
+
+On running "grunt spec:run", the spec-module! requirejs plugin will generate button module to be created in src/namespace/button.js if none exists yet. The default pattern is an object factory which will look like this:
 ```javascript
 define(function() {
     function Button() {
