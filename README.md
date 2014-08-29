@@ -94,15 +94,9 @@ define(['collaborator!acme/parser', 'spec-object!acme/calculator'], function(cal
 });
 ```
 
-Specifiy all expected collaborators and their methods in the file collaborators.js:
-```javascript
-define(function() {
-    return {
-        '*': {
-            parser: ['parse']
-        }
-    };
-});
+Specifiy all expected collaborators explicitly in the file collaborators.yml, although the collaborator! plugin will add these for you automatically:
+```yaml
+acme/parser: [parse]
 ```
 
 
