@@ -2,7 +2,16 @@
 
 module.exports = function(grunt) {
 
-	grunt.config('grunt-spec-config', 'node_modules/grunt-spec/collaborator/collaborator-requirejs-config.js');
+	var packageJsonPath = process.cwd() + '/package.json';
+	var moduleName = 'grunt-spec';
+	var moduleRoot = 'node_modules/' + moduleName + '/collaborator/';
+
+
+	if (grunt.file.exists(packageJsonPath) && require(packageJsonPath).name === moduleName) {
+		moduleRoot = 'collaborator/';
+	}
+
+	grunt.config('grunt-spec-config', moduleRoot + 'collaborator-requirejs-config.js');
 	grunt.loadNpmTasks('grunt-contrib-jasmine');
 	grunt.initConfig({
 		jasmine : {
@@ -13,7 +22,16 @@ module.exports = function(grunt) {
 				template: require('grunt-template-jasmine-requirejs'),
 				templateOptions: {
 					requireConfigFile: grunt.config('grunt-spec-config'),
-					requireConfig: { }
+					requireConfig: {
+						paths: {
+							collaborator: moduleRoot + 'collaborator',
+							'spec-object': moduleRoot + 'spec-object',
+							'spec-module': moduleRoot + 'spec-module',
+							'collaborator/definer': moduleRoot + 'definer',
+							'collaborators': moduleRoot + 'collaborators',
+							'collaborator/builder': moduleRoot + 'builder'
+						}
+					}
 				}
 			}
 		}
@@ -167,6 +185,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask('spec', 'Spec objects with Jasmine', function(command, specName) {
+
 
 		switch (command) {
 			// run jasmine tests

@@ -1,7 +1,7 @@
 {
   "name": "grunt-spec",
-  "version": "0.2.26",
-  "description": "Requirejs plugin which provides a simple mechanism for using requirejs a DI container to provide jasmine spies to module specs",
+  "version": "0.2.27",
+  "description": "Grunt plugin which provides a spec/object generator and a simple mechanism for using requirejs as a DI container to provide jasmine spies to module specs",
   "main": "plugin.js",
   "scripts": {
   },
@@ -19,7 +19,10 @@
     "grunt-contrib-jasmine": "^0.6.5",
     "grunt-lib-phantomjs": "^0.6.0"
   },
-  "repository": "",
+  "repository": {
+	  "type" : "git",
+	  "url" : "https://github.com/jon-acker/collaborator/"
+  },
   "keywords": [
     "requirejs",
     "mock",
