@@ -2,108 +2,24 @@
 
 module.exports = function(grunt) {
 
+	var chalk = require('chalk');
+	var readline = require('readline-sync');
+	var jsYaml = require('js-yaml');
+
+	var specWriter = require('./writer/spec');
+	var srcWriter = require('./writer/src');
+	var collaboratorWriter = require('./writer/collaborator');
+	var bootstrap = require('./bootstrap');
+
 	var packageJsonPath = process.cwd() + '/package.json';
 	var moduleName = 'grunt-spec';
 	var moduleRoot = 'node_modules/' + moduleName + '/collaborator/';
-
 
 	if (grunt.file.exists(packageJsonPath) && require(packageJsonPath).name === moduleName) {
 		moduleRoot = 'collaborator/';
 	}
 
-	grunt.config('grunt-spec-config', moduleRoot + 'collaborator-requirejs-config.js');
-	grunt.loadNpmTasks('grunt-contrib-jasmine');
-	grunt.initConfig({
-		jasmine : {
-			src : [],
-			options : {
-				keepRunner: true,
-				specs : 'spec/**/*.js',
-				template: require('grunt-template-jasmine-requirejs'),
-				templateOptions: {
-					requireConfigFile: grunt.config('grunt-spec-config'),
-					requireConfig: {
-						paths: {
-							collaborator: moduleRoot + 'collaborator',
-							'spec-object': moduleRoot + 'spec-object',
-							'spec-module': moduleRoot + 'spec-module',
-							'collaborator/definer': moduleRoot + 'definer',
-							'collaborators': moduleRoot + 'collaborators',
-							'collaborator/builder': moduleRoot + 'builder'
-						}
-					}
-				}
-			}
-		}
-	});
-
-	var chalk = require('chalk');
-	var readline = require('readline-sync');
-	var readYaml = require('read-yaml');
-	var jsYaml = require('js-yaml');
-
-	/**
-	 *
-	 * @param specFilename
-	 * @param specName
-	 * @param moduleName
-	 * @param capitalizedNamespaceParts
-	 */
-	function writeModuleSpec(specFilename, specName, moduleName, capitalizedNamespaceParts) {
-		var moduleNameUC = capitalizedNamespaceParts[capitalizedNamespaceParts.length-1];
-		grunt.file.write(specFilename,
-			"define(['spec-module!" + specName + "'], function(" + moduleName + ") {\n" +
-				"\n" +
-				"    describe('" + capitalizedNamespaceParts.join(' ') + "', function() {\n" +
-				"\n" +
-				"        it('is an instance of " + moduleNameUC + "', function() {\n" +
-				"            expect(" + moduleName + ".constructor.name).toBe('"+moduleNameUC+"');\n" +
-				"        });\n" +
-				"\n" +
-				"    });\n" +
-				"\n" +
-				"});\n"
-		);
-	}
-
-	/**
-	 *
-	 * @param specFilename
-	 * @param specName
-	 * @param moduleName
-	 * @param namespaceParts
-	 */
-	function writeObjectSpec(specFilename, specName, moduleName, namespaceParts) {
-		grunt.file.write(specFilename,
-			"define(['spec-object!" + specName + "'], function(" + moduleName + ") {\n" +
-				"\n" +
-				"    describe('" + namespaceParts.join(' ') + "', function() {\n" +
-				"\n" +
-				"        it('is an instance of object', function() {\n" +
-				"            expect(typeof " + moduleName + ").toBe('object');\n" +
-				"        });\n" +
-				"\n" +
-				"    });\n" +
-				"\n" +
-				"});\n"
-		);
-	}
-
-	/**
-	 * Create collaborators js from yaml file
-	 *
-	 * @param collaborators
-	 */
-	function writeCollaborators(collaborators) {
-		var formattedCollaborators = '';
-		collaborators = collaborators || {};
-		Object.keys(collaborators).forEach(function(collaborator, index) {
-			formattedCollaborators += "    '" + collaborator + "': [" + collaborators[collaborator].map(function(c) { return "'"+c+"'"}) + "]";
-			formattedCollaborators += index < Object.keys(collaborators).length -1 ? ",\n" : "";
-		});
-
-		grunt.file.write(moduleRoot + 'collaborators.js', "define({\n" + formattedCollaborators + "\n});\n");
-	}
+	bootstrap.configure(moduleRoot);
 
 	grunt.event.on('jasmine.specDone', function(event) {
 		var matches;
@@ -148,21 +64,7 @@ module.exports = function(grunt) {
 						grunt.log.writeln(chalk.white.bgBlue('Creating new module in file ') + chalk.bold.white.bgGreen(' '+event.file+' '));
 						grunt.log.writeln('---');
 
-						var moduleName = event.file.split('\/').pop();
-						var moduleNameUC = moduleName.charAt(0).toUpperCase() + moduleName.slice(1);
-
-						grunt.file.write('src/' + event.file + '.js',
-							"define(function() {\n" +
-							"\n" +
-							"    function " + moduleNameUC + "() {\n" +
-							"\n" +
-							"        //@todo: create methods here\n" +
-							"\n" +
-							"    }\n" +
-							"\n" +
-							"    return new " + moduleNameUC + "();\n" +
-							"});\n"
-						);
+						srcWriter.writeModule(event.file);
 					}
 					break;
 
@@ -176,17 +78,7 @@ module.exports = function(grunt) {
 						grunt.log.writeln(chalk.white.bgBlue('Creating new AMD object file: ') + chalk.bold.white.bgGreen(' '+event.file+' '));
 						grunt.log.writeln('---');
 
-						grunt.file.write('src/' + event.file + '.js',
-							"define(function() {\n" +
-								"\n" +
-								"    return {\n" +
-								"\n" +
-								"        //@todo: create methods here\n" +
-								"\n" +
-								"    }\n" +
-								"\n" +
-								"});\n"
-						);
+						srcWriter.writeObject(event.file);
 					}
 					break;
 			}
@@ -198,7 +90,6 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('spec', 'Spec objects with Jasmine', function(command, specName) {
 
-
 		switch (command) {
 			// run jasmine tests
 			case 'run':
@@ -206,45 +97,19 @@ module.exports = function(grunt) {
 					grunt.file.write('collaborators.yml');
 				}
 
-				writeCollaborators(grunt.file.readYAML('collaborators.yml'));
+				collaboratorWriter.write(grunt.file.readYAML('collaborators.yml'), moduleRoot);
 
 				grunt.task.run('jasmine');
 				break;
 
 			case 'module':
-				var specFilename = 'spec/' + specName + '.js';
-				var namespaceParts = specName.split('/');
-				var moduleName = namespaceParts[namespaceParts.length - 1];
-				var capitalizedNamespaceParts = namespaceParts.map(function(part) {
-					return part.charAt(0).toUpperCase() + part.slice(1);
-				});
-
-				if (grunt.file.exists(specFilename)) {
-
-					var answer = readline.question([
-						chalk.white.bgBlue('The file '+specFilename+' already exists, would you like to overwrite it?'),
-						'[y/N]'
-					]);
-
-					(answer.toUpperCase() === 'Y') && grunt.file.delete(specFilename);
-				}
-
-				if (typeof answer === 'undefined' || answer.toUpperCase() === 'Y') {
-					grunt.log.writeln(chalk.white.bgBlue('Creating module spec in: ' + specFilename));
-					writeModuleSpec(specFilename, specName, moduleName, capitalizedNamespaceParts);
-				}
-				break;
-
-
 			case 'object':
 				var specFilename = 'spec/' + specName + '.js';
-				var namespaceParts = specName.split('/');
-				var moduleName = namespaceParts[namespaceParts.length - 1];
 
 				if (grunt.file.exists(specFilename)) {
 
 					var answer = readline.question([
-						chalk.white.bgBlue('The file '+specFilename+' already exists, would you like to overwrite it?'),
+						chalk.white.bgBlue('The file ' + specFilename + ' already exists, would you like to overwrite it?'),
 						'[y/N]'
 					]);
 
@@ -252,8 +117,8 @@ module.exports = function(grunt) {
 				}
 
 				if (typeof answer === 'undefined' || answer.toUpperCase() === 'Y') {
-					grunt.log.writeln(chalk.white.bgBlue('Creating object in: ' + specFilename));
-					writeObjectSpec(specFilename, specName, moduleName, namespaceParts);
+					grunt.log.writeln(chalk.white.bgBlue('Creating ' + command + ' spec in: ' + specFilename));
+					command === 'module' ? specWriter.writeModule(specFilename, specName) : specWriter.writeObject(specFilename, specName) ;
 				}
 				break;
 		}

@@ -3,8 +3,7 @@
   "version": "0.3.13",
   "description": "Grunt plugin which provides a spec/object generator and a simple mechanism for using requirejs as a DI container to provide jasmine spies to module specs",
   "main": "plugin.js",
-  "scripts": {
-  },
+  "scripts": {},
   "dependencies": {
     "chalk": "^0.5.1",
     "grunt": "^0.4.5",
@@ -20,8 +19,8 @@
     "grunt-lib-phantomjs": "^0.6.0"
   },
   "repository": {
-	  "type" : "git",
-	  "url" : "https://github.com/jon-acker/collaborator/"
+    "type": "git",
+    "url": "https://github.com/jon-acker/collaborator/"
   },
   "keywords": [
     "requirejs",
@@ -35,11 +34,12 @@
   "author": "Jon Acker",
   "license": "BSD",
   "devDependencies": {
-    "js-yaml": "^3.1.0",
-    "read-yaml": "^0.2.0",
     "grunt": "^0.4.5",
-    "grunt-template-jasmine-requirejs": "^0.2.0",
     "grunt-contrib-jasmine": "^0.6.5",
-    "grunt-lib-phantomjs": "^0.6.0"
+    "grunt-lib-phantomjs": "^0.6.0",
+    "grunt-template-jasmine-requirejs": "^0.2.0",
+    "js-yaml": "^3.1.0",
+    "mustache": "^0.8.2",
+    "read-yaml": "^0.2.0"
   }
 }

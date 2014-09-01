@@ -8,6 +8,7 @@ define(function() {
 			}
 
 			var modulePath = 'src/' + requiredModule;
+
 			req([modulePath], function (module) {
 				loader(module);
 			}, function (e) {
