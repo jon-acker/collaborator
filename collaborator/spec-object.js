@@ -3,6 +3,10 @@ define(function() {
 
     return {
         load: function(requiredModule, req, loader, config) {
+			if (requiredModule.indexOf('double/') === 0) {
+				requiredModule = requiredModule.replace('double/', '');
+			}
+
 			var modulePath = 'src/' + requiredModule;
 			req([modulePath], function (module) {
 				loader(module);

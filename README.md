@@ -115,5 +115,7 @@ Specify all expected collaborators explicitly in the file collaborators.yml, alt
 acme/parser: [parse]
 ```
 
+Caveats
+=======
 
-
+Since "collaborator" creates a spy definition of each of the collaborators in the double/ base-namespace, you cannot currently use this base-namespace for anything else (but acme/double/etc is fine)
