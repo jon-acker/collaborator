@@ -102,7 +102,7 @@ module.exports = function(grunt) {
 			formattedCollaborators += index < Object.keys(collaborators).length -1 ? ",\n" : "";
 		});
 
-		grunt.file.write('node_modules/grunt-spec/collaborator/collaborators.js', "define({\n" + formattedCollaborators + "\n});\n");
+		grunt.file.write(moduleRoot + 'collaborators.js', "define({\n" + formattedCollaborators + "\n});\n");
 	}
 
 	grunt.event.on('jasmine.specDone', function(event) {
@@ -116,7 +116,7 @@ module.exports = function(grunt) {
 
 	grunt.event.once('error.onError', function(event) {
 		if (typeof event === 'string') {
-
+			var answer = '';
 			event = JSON.parse(event);
 
 			switch (event.error) {
@@ -124,7 +124,7 @@ module.exports = function(grunt) {
 					event.file = event.file.replace('double/', '');
 					grunt.log.writeln(chalk.white.bold.bgRed('Non existent module or collaborator: "' + event.file+'"\n'));
 
-					var answer = readline.question([
+					answer = readline.question([
 						chalk.white.bgBlue('Would you like me to set up a collaborator/spy?'),
 						"[Y/n]\n"
 					]);
@@ -139,43 +139,55 @@ module.exports = function(grunt) {
 					break;
 
 				case 'E_NOENT_MODULE':
-					grunt.log.writeln(chalk.bold.red('Module not found: ') + chalk.bold.grey(event.file));
-					grunt.log.writeln(chalk.bold.red('Creating new module in file ') + chalk.bold.grey(event.file));
-					grunt.log.writeln('---');
+					answer = readline.question([
+						chalk.white.bgBlue('Looks like the module "' + event.file+' doesn\'t exist, create it now?'),
+						"[Y/n]\n"
+					]);
 
-					var moduleName = event.file.split('\/').pop();
-					var moduleNameUC = moduleName.charAt(0).toUpperCase() + moduleName.slice(1);
+					if ((answer.toUpperCase() === 'Y')) {
+						grunt.log.writeln(chalk.white.bgBlue('Creating new module in file ') + chalk.bold.white.bgGreen(' '+event.file+' '));
+						grunt.log.writeln('---');
 
-					grunt.file.write('src/' + event.file + '.js',
-						"define(function() {\n" +
-						"\n" +
-						"    function " + moduleNameUC + "() {\n" +
-						"\n" +
-						"        //@todo: create methods here\n" +
-						"\n" +
-						"    }\n" +
-						"\n" +
-						"    return new " + moduleNameUC + "();\n" +
-						"});\n"
-					);
-					break;
+						var moduleName = event.file.split('\/').pop();
+						var moduleNameUC = moduleName.charAt(0).toUpperCase() + moduleName.slice(1);
 
-				case 'E_NOENT_OBJECT':
-					grunt.log.writeln(chalk.bold.red('Object not found: ') + chalk.bold.grey(event.file));
-					grunt.log.writeln(chalk.bold.red('Creating new AMD object file ') + chalk.bold.grey(event.file));
-					grunt.log.writeln('---');
-
-					grunt.file.write('src/' + event.file + '.js',
-						"define(function() {\n" +
+						grunt.file.write('src/' + event.file + '.js',
+							"define(function() {\n" +
 							"\n" +
-							"    return {\n" +
+							"    function " + moduleNameUC + "() {\n" +
 							"\n" +
 							"        //@todo: create methods here\n" +
 							"\n" +
 							"    }\n" +
 							"\n" +
+							"    return new " + moduleNameUC + "();\n" +
 							"});\n"
-					);
+						);
+					}
+					break;
+
+				case 'E_NOENT_OBJECT':
+					answer = readline.question([
+						chalk.white.bgBlue('Looks like the object "' + event.file+' doesn\'t exist, create it now?'),
+						"[Y/n]\n"
+					]);
+
+					if ((answer.toUpperCase() === 'Y')) {
+						grunt.log.writeln(chalk.white.bgBlue('Creating new AMD object file: ') + chalk.bold.white.bgGreen(' '+event.file+' '));
+						grunt.log.writeln('---');
+
+						grunt.file.write('src/' + event.file + '.js',
+							"define(function() {\n" +
+								"\n" +
+								"    return {\n" +
+								"\n" +
+								"        //@todo: create methods here\n" +
+								"\n" +
+								"    }\n" +
+								"\n" +
+								"});\n"
+						);
+					}
 					break;
 			}
 
