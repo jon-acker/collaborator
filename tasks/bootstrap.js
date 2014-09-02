@@ -1,3 +1,5 @@
+'use strict';
+
 var grunt = require('grunt');
 
 module.exports.configure = function(moduleRoot) {

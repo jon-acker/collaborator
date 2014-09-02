@@ -4,7 +4,6 @@ module.exports = function(grunt) {
 
 	var chalk = require('chalk');
 	var readline = require('readline-sync');
-	var jsYaml = require('js-yaml');
 
 	var specWriter = require('./writer/spec');
 	var srcWriter = require('./writer/src');
@@ -26,7 +25,7 @@ module.exports = function(grunt) {
 
 		if (event.status === 'failed' && (matches = event.failedExpectations[0].message.match(/is not a function \(evaluating \'(\w+)\.(\w+)\(.*\)/))) {
 			grunt.log.writeln(chalk.red.bold('\n\nYour '+ chalk.green(matches[1]) +  ' doesn\'t seem to have a method called '+ chalk.green(matches[2]) + '.\n'));
-			process.exit();
+			process.exit(1);
 		}
 	});
 
@@ -37,8 +36,8 @@ module.exports = function(grunt) {
 
 			switch (event.error) {
 				case 'E_NOENT_COLLABORATOR':
-					event.file = event.file.replace('double/', '');
-					grunt.log.writeln(chalk.white.bold.bgRed('Non existent module or collaborator: "' + event.file+'"\n'));
+					event.file = event.file.replace(/^double\//, '');
+					grunt.log.writeln(chalk.white.bold.bgRed('Non existent module or collaborator: "' + event.file + '"\n'));
 
 					answer = readline.question([
 						chalk.white.bgBlue('Would you like me to set up a collaborator/spy?'),
@@ -46,45 +45,40 @@ module.exports = function(grunt) {
 					]);
 
 					if ((answer.toUpperCase() === 'Y')) {
-						var collaborators = grunt.file.readYAML('collaborators.yml');
-						collaborators = collaborators || {};
-						collaborators[event.file] = ['method'];
-						grunt.file.write('collaborators.yml', jsYaml.safeDump(collaborators, {flowLevel: 1}));
-						grunt.log.writeln(chalk.blue('Collaborator interface  '+event.file+' created. Run grunt:run again'))
+						collaboratorWriter.add(event.file);
+						grunt.log.writeln(chalk.blue('Collaborator interface  ' + event.file + ' created. Run grunt:run again'))
 					}
 					break;
 
 				case 'E_NOENT_MODULE':
-					answer = readline.question([
-						chalk.white.bgBlue('Looks like the module "' + event.file+' doesn\'t exist, create it now?'),
-						"[Y/n]\n"
-					]);
-
-					if ((answer.toUpperCase() === 'Y')) {
-						grunt.log.writeln(chalk.white.bgBlue('Creating new module in file ') + chalk.bold.white.bgGreen(' '+event.file+' '));
-						grunt.log.writeln('---');
-
-						srcWriter.writeModule(event.file);
-					}
-					break;
-
 				case 'E_NOENT_OBJECT':
+					var type = '';
+					switch (event.error) {
+						case 'E_NOENT_MODULE':
+							srcWriter.writeModule(event.file);
+							type = 'module';
+							break;
+
+						case 'E_NOENT_OBJECT':
+							srcWriter.writeObject(event.file);
+							type = 'object';
+							break;
+					}
+
 					answer = readline.question([
-						chalk.white.bgBlue('Looks like the object "' + event.file+' doesn\'t exist, create it now?'),
+						chalk.white.bgBlue('Looks like the ' + type + ' ' + event.file + ' doesn\'t exist, create it now?'),
 						"[Y/n]\n"
 					]);
 
 					if ((answer.toUpperCase() === 'Y')) {
-						grunt.log.writeln(chalk.white.bgBlue('Creating new AMD object file: ') + chalk.bold.white.bgGreen(' '+event.file+' '));
-						grunt.log.writeln('---');
+						grunt.log.writeln(chalk.white.bgBlue('Creating new module in file ') + chalk.bold.white.bgGreen(' ' + event.file + ' '));
+						grunt.log.writeln('----------------');
 
-						srcWriter.writeObject(event.file);
 					}
 					break;
 			}
 
 			process.exit(0);
-
 		}
 	});
 
@@ -125,8 +119,6 @@ module.exports = function(grunt) {
 
 
 	});
-
-
 
 };
 
