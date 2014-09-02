@@ -4,9 +4,10 @@ var grunt = require('grunt');
 var jsYaml = require('js-yaml');
 
 /**
- * Create collaborators js from yaml file
+ * Create collaborators js from YAML file
  *
- * @param collaborators
+ * @param {array} collaborators
+ * @param {string} moduleRoot
  */
 module.exports.write = function writeCollaborators(collaborators, moduleRoot) {
 	var formattedCollaborators = '';
@@ -22,7 +23,7 @@ module.exports.write = function writeCollaborators(collaborators, moduleRoot) {
 /**
  * Add new collaborator into YAML file
  *
- * @param modulePath
+ * @param {string} modulePath
  */
 module.exports.add = function addCollaborator(modulePath) {
 	var collaborators = grunt.file.readYAML('collaborators.yml');
