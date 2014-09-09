@@ -9,7 +9,7 @@ var mustache = require('mustache');
  * @param moduleName
  */
 module.exports.writeModule = function writeSrcModule(fileName) {
-	var srcTemplate = grunt.file.read('tasks/writer/template/module.js.src');
+	var srcTemplate = grunt.file.read(grunt.config().moduleRoot + 'tasks/writer/template/module.js.src');
 	var moduleName = fileName.split('\/').pop();
 
 	grunt.file.write(
@@ -27,7 +27,7 @@ module.exports.writeModule = function writeSrcModule(fileName) {
  * @param fileName
  */
 module.exports.writeObject = function writeSrcModule(fileName) {
-	var srcTemplate = grunt.file.read('tasks/writer/template/object.js.src')
+	var srcTemplate = grunt.file.read(grunt.config().moduleRoot + 'tasks/writer/template/object.js.src')
 	grunt.file.write(
 		grunt.config().gruntSpec.src + fileName + '.js',
 		mustache.render(srcTemplate)
