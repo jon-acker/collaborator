@@ -10,7 +10,7 @@ var mustache = require('mustache');
  */
 
 module.exports.writeModule = function writeModuleSpec(specFilename, specName) {
-	var moduleTemplate = grunt.file.read('tasks/writer/template/module.js.spec');
+	var moduleTemplate = grunt.file.read(process.cwd() + '/tasks/writer/template/module.js.spec');
 	var namespaceParts = specName.split('/');
 	var moduleName = namespaceParts[namespaceParts.length - 1];
 	var capitalizedNamespaceParts = namespaceParts.map(function(part) {
@@ -35,7 +35,7 @@ module.exports.writeModule = function writeModuleSpec(specFilename, specName) {
  * @param {string} specName
  */
 module.exports.writeObject= function writeObjectSpec(specFilename, specName) {
-	var moduleTemplate = grunt.file.read('tasks/writer/template/object.js.spec');
+	var moduleTemplate = grunt.file.read(process.cwd() + '/tasks/writer/template/object.js.spec');
 	var namespaceParts = specName.split('/');
 	var moduleName = namespaceParts[namespaceParts.length - 1];
 
