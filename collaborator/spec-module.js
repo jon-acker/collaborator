@@ -7,7 +7,7 @@ define(function() {
 				requiredModule = requiredModule.replace('double/', '');
 			}
 
-			var modulePath = 'src/' + requiredModule;
+			var modulePath = config.specDirSrc + requiredModule;
 
 			req([modulePath], function (module) {
 				loader(module);
