@@ -12,7 +12,7 @@ module.exports = function(grunt) {
 
 	var packageJsonPath = process.cwd() + '/package.json';
 	var moduleName = 'grunt-spec';
-	var moduleRoot = 'node_modules/' + moduleName;
+	var moduleRoot = 'node_modules/' + moduleName + '/';
 
 	if (grunt.file.exists(packageJsonPath) && require(packageJsonPath).name === moduleName) {
 		moduleRoot = '';
