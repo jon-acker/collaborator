@@ -3,8 +3,9 @@
 var grunt = require('grunt');
 
 module.exports.configure = function(moduleRoot) {
-
-	grunt.config('grunt-spec-config', moduleRoot + 'collaborator-requirejs-config.js');
+	var collaboratorRoot = moduleRoot + 'collaborator/';
+	grunt.config('grunt-spec-config', collaboratorRoot + 'collaborator-requirejs-config.js');
+	grunt.config('moduleRoot', moduleRoot);
 	grunt.loadNpmTasks('grunt-contrib-jasmine');
 
 	var config = grunt.config();
@@ -27,12 +28,12 @@ module.exports.configure = function(moduleRoot) {
 					specDirSrc: srcDir,
 					specDirSpec: specDir,
 					paths: {
-						collaborator: moduleRoot + 'collaborator',
-						'spec-object': moduleRoot + 'spec-object',
-						'spec-module': moduleRoot + 'spec-module',
-						'collaborator/definer': moduleRoot + 'definer',
-						'collaborators': moduleRoot + 'collaborators',
-						'collaborator/builder': moduleRoot + 'builder'
+						collaborator: collaboratorRoot + 'collaborator',
+						'spec-object': collaboratorRoot + 'spec-object',
+						'spec-module': collaboratorRoot + 'spec-module',
+						'collaborator/definer': collaboratorRoot + 'definer',
+						'collaborators': collaboratorRoot + 'collaborators',
+						'collaborator/builder': collaboratorRoot + 'builder'
 					}
 				}
 			}
