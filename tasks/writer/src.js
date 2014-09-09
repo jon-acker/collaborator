@@ -13,7 +13,7 @@ module.exports.writeModule = function writeSrcModule(fileName) {
 	var moduleName = fileName.split('\/').pop();
 
 	grunt.file.write(
-		'src/' + fileName + '.js',
+		grunt.config().gruntSpec.src + fileName + '.js',
 		mustache.render(srcTemplate, {
 			moduleNameUC: moduleName.charAt(0).toUpperCase() + moduleName.slice(1)
 		})
@@ -29,7 +29,7 @@ module.exports.writeModule = function writeSrcModule(fileName) {
 module.exports.writeObject = function writeSrcModule(fileName) {
 	var srcTemplate = grunt.file.read('tasks/writer/template/object.js.src')
 	grunt.file.write(
-		'src/' + fileName + '.js',
+		grunt.config().gruntSpec.src + fileName + '.js',
 		mustache.render(srcTemplate)
 	);
 };

@@ -67,13 +67,12 @@ module.exports = function(grunt) {
 
 					answer = readline.question([
 						chalk.white.bgBlue('Looks like the ' + type + ' ' + event.file + ' doesn\'t exist, create it now?'),
-						"[Y/n]\n"
+						"[Y/n]"
 					]);
 
 					if ((answer.toUpperCase() === 'Y')) {
 						grunt.log.writeln(chalk.white.bgBlue('Creating new module in file ') + chalk.bold.white.bgGreen(' ' + event.file + ' '));
-						grunt.log.writeln('----------------');
-
+						grunt.log.writeln(chalk.white.bgRed('Run grunt spec:run again ...'));
 					}
 					break;
 			}
@@ -98,7 +97,7 @@ module.exports = function(grunt) {
 
 			case 'module':
 			case 'object':
-				var specFilename = 'spec/' + specName + '.js';
+				var specFilename = grunt.config().gruntSpec.spec + specName + '.js';
 
 				if (grunt.file.exists(specFilename)) {
 
@@ -116,7 +115,6 @@ module.exports = function(grunt) {
 				}
 				break;
 		}
-
 
 	});
 

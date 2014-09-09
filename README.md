@@ -24,8 +24,7 @@ grunt-spec
 ----------
 
 Grunt-spec is a tool designed to facilitate a workflow for developing Javascript AMD modules using TDD (in particular, Mockist TDD).
-Grunt-spec was inspired by the PhpSpec and the positive workflow it facilitates for driving PHP application design (PhpSpec is courtesy of the collective
-genius of Marcello Duarte and Konstantin Kudryashov).
+Grunt-spec was inspired by the PhpSpec and the positive workflow it facilitates for driving PHP application design ([PhpSpec](http://www.phpspec.net/) is courtesy of Marcello Duarte and Konstantin Kudryashov).
 
 This tool uses Jasmine, Grunt and RequireJs under the hood. It will generate Jasmine spec files in the folder determined by your modules namespace (e.g. acme/page/formatter), using grunt spec plugin. When the specs are run (grunt spec:run) the tool will offer to generate
 the skeleton of an Module-Under-Test (using an AMD object or module template)
@@ -113,6 +112,19 @@ define(['collaborator!acme/parser', 'spec-object!acme/calculator'], function(cal
 Specify all expected collaborators explicitly in the file collaborators.yml, although the collaborator! plugin will add these for you automatically:
 ```yaml
 acme/parser: [parse]
+```
+
+Configuring src and spec folders:
+=====================================
+
+By default grunt-spec assumes src/ and spec/ folders in relation to where grunt-spec is run. To override the defaults, add the following to your Gruntfile.js:
+```
+grunt.initConfig({
+    gruntSpec: {
+        src: 'path/to/my/src/',
+        spec: 'path/to/my/specs/'
+    }
+});
 ```
 
 Caveats
