@@ -92,7 +92,7 @@ module.exports = function(grunt) {
 
 				collaboratorWriter.write(grunt.file.readYAML('collaborators.yml'), moduleRoot);
 
-				grunt.task.run('test/jasmine');
+				grunt.task.run('jasmine');
 				break;
 
 			case 'module':
