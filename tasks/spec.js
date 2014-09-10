@@ -53,17 +53,6 @@ module.exports = function(grunt) {
 				case 'E_NOENT_MODULE':
 				case 'E_NOENT_OBJECT':
 					var type = '';
-					switch (event.error) {
-						case 'E_NOENT_MODULE':
-							srcWriter.writeModule(event.file);
-							type = 'module';
-							break;
-
-						case 'E_NOENT_OBJECT':
-							srcWriter.writeObject(event.file);
-							type = 'object';
-							break;
-					}
 
 					answer = readline.question([
 						chalk.white.bgBlue('Looks like the ' + type + ' ' + event.file + ' doesn\'t exist, create it now?'),
@@ -71,6 +60,18 @@ module.exports = function(grunt) {
 					]);
 
 					if ((answer.toUpperCase() === 'Y')) {
+						switch (event.error) {
+							case 'E_NOENT_MODULE':
+								srcWriter.writeModule(event.file);
+								type = 'module';
+								break;
+
+							case 'E_NOENT_OBJECT':
+								srcWriter.writeObject(event.file);
+								type = 'object';
+								break;
+						}
+
 						grunt.log.writeln(chalk.white.bgBlue('Creating new module in file ') + chalk.bold.white.bgGreen(' ' + event.file + ' '));
 						grunt.log.writeln(chalk.white.bgRed('Run grunt spec:run again ...'));
 					}
