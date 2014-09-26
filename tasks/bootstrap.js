@@ -32,7 +32,7 @@ module.exports.configure = function(moduleRoot) {
 						'spec-object': collaboratorRoot + 'spec-object',
 						'spec-module': collaboratorRoot + 'spec-module',
 						'collaborator/definer': collaboratorRoot + 'definer',
-						'collaborators': collaboratorRoot + 'collaborators',
+						'collaborators': collaboratorRoot + '../collaborators',
 						'collaborator/builder': collaboratorRoot + 'builder'
 					}
 				}
