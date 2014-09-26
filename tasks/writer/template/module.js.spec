@@ -6,6 +6,6 @@ define(['spec-module!{{{specName}}}'], function({{{moduleName}}}) {
             expect({{{moduleName}}}.constructor.name).toBe('{{{moduleNameUC}}}');
         });
 
-	});
+    });
 
 });

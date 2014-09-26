@@ -72,7 +72,7 @@ module.exports = function(grunt) {
 								break;
 						}
 
-						grunt.log.writeln(chalk.white.bgBlue('Creating new module in file ') + chalk.bold.white.bgGreen(' ' + event.file + ' '));
+						grunt.log.writeln(chalk.white.bgBlue('Creating new module ') + chalk.bold.white.bgGreen(' ' + event.file + ' '));
 						grunt.log.writeln(chalk.white.bgRed('Run grunt spec:run again ...'));
 					}
 					break;

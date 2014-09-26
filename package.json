@@ -1,6 +1,6 @@
 {
   "name": "grunt-spec",
-  "version": "0.4.3",
+  "version": "0.4.31",
   "description": "Grunt plugin which provides a spec/object generator and a simple mechanism for using requirejs as a DI container to provide jasmine spies to module specs",
   "main": "plugin.js",
   "scripts": {},
