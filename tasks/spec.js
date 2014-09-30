@@ -55,7 +55,7 @@ module.exports = function(grunt) {
 					var type = '';
 
 					answer = readline.question([
-						chalk.white.bgBlue('Looks like the ' + type + ' ' + event.file + ' doesn\'t exist, create it now?'),
+						chalk.white.bgBlue('Looks like ' + type + ' ' + event.file + ' does not exist, create it now?'),
 						"[Y/n]"
 					]);
 

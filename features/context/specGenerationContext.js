@@ -1,6 +1,6 @@
 module.exports = function() {
 	var childProcess = require('child_process');
-	var fileSystem = require('fs');
+	var grunt = require('grunt');
 
 	var commandOutput = '';
 
@@ -8,7 +8,7 @@ module.exports = function() {
 
 	var matches = {createNewModule: false};
 
-	this.Given(/^There are no specs$/, function (callback) {
+	this.Given(/^there are no specs$/, function (callback) {
 		childProcess.exec('rm -rf spec/');
 		callback();
 	});
@@ -21,51 +21,62 @@ module.exports = function() {
 	this.When(/^I run the command "([^"]*)"$/, function (command, callback) {
 		var cmd = command.split(/\s/);
 		var gruntSpecProcess = childProcess.spawn(cmd[0], [cmd[1]], {stdio: ['pipe', 'pipe', 'pipe']});
+		currentChildProcess = gruntSpecProcess;
 
 		gruntSpecProcess.stdout.on('data', function(data) {
-
-			if (data.toString().match(/Looks like the .* doesn\'t exist, create it now/)) {
-				currentChildProcess = gruntSpecProcess;
-				callback();
-			}
+			commandOutput = data.toString();
 		});
 
-		gruntSpecProcess.on('close', function (code) {
-			console.log('child process exited with code ' + code);
-		});
+		callback();
 	});
 
 	this.Then(/^I should see "([^"]*)"$/, function (expectedOutput, callback) {
 		currentChildProcess.stdout.on('data', function(data) {
-			var pattern = eval('/(' + expectedOutput.replace('/', '\\/') + ')/');
-			var dataString = data.toString().replace(/[^a-zA-Z0-9_\\/\s]+/g, '');
+
+			var pattern = new RegExp('(' + expectedOutput.replace('/', '/') + ')');
+			var dataString = commandOutput.replace(/[^a-zA-Z0-9_\\/\s\.:\?\',]+/g, '');
 			var output = dataString.match(pattern);
 
 			if (output && output[1] == expectedOutput) {
-				callback();
+				currentChildProcess.on('close', function(code) {
+					callback(code);
+				});
 			}
 		});
 	});
 
 	this.Then(/^the file "([^"]*)" should have been created with these contents:$/, function (fileName, expectedContents, callback) {
-		var fileContents = fileSystem.readFileSync(fileName);
+		var fileContents = grunt.file.read(fileName);
 
-		callback(fileContents.toString() === expectedContents ? 0 : 'File contents did not match expectation');
+		callback(fileContents === expectedContents ? 0 : 'File contents did not match expectation');
 	});
 
 	this.Given(/^there is a spec "([^"]*)"$/, function (specName, specContents, callback) {
-		fileSystem.writeFileSync('spec/' + specName + '.js', specContents);
+		grunt.file.write('spec/' + specName + '.js', specContents);
 
 		callback(0);
 	});
 
 	this.Then(/^I should be asked whether I want to create the file$/, function (callback) {
-		// Write code here that turns the phrase above into concrete actions
-		callback();
+		//if (data.toString().match(/Looks like the .* doesn\'t exist, create it now/)) {
+		//	callback();
+		//}
+		callback.pending();
 	});
 
 	this.When(/^I say that I do want to create the file$/, function (callback) {
 		currentChildProcess.stdin.write('Y\n');
 		callback();
+	});
+
+	this.When(/^I say that I do not want to create the file$/, function (callback) {
+		currentChildProcess.stdin.write('N\n');
+		callback();
+	});
+
+	this.Then(/^the file "([^"]*)" should not have been created$/, function (file, callback) {
+		if (!grunt.file.exists(file)) {
+			callback()
+		}
 	});
 };

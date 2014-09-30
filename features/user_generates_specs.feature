@@ -2,16 +2,16 @@ Feature: Generating specs
 
   Scenario: Generating an object spec
     Given there are no specs
-     When I run the command "grunt spec:object:test"
-     Then I should see "Creating object spec in: spec/test.js"
-      And the file "spec/test.js" should have been created with these contents:
+     When I run the command "grunt spec:object:acme/finder"
+     Then I should see "Creating object spec in: spec/acme/finder.js"
+      And the file "spec/acme/finder.js" should have been created with these contents:
 """
-define(['spec-object!test'], function(test) {
+define(['spec-object!acme/finder'], function(finder) {
 
-    describe('test', function() {
+    describe('acme finder', function() {
 
         it('is an instance of object', function() {
-            expect(typeof test).toBe('object');
+            expect(typeof finder).toBe('object');
 		});
 
     });
@@ -21,9 +21,9 @@ define(['spec-object!test'], function(test) {
 
   Scenario: Generating a module spec
     Given there are no specs
-    When I run the command "grunt spec:module:acme/person"
-    Then I should see "Creating module spec in: spec/acme/person.js"
-    And the file "spec/acme/person.js" should have been created with these contents:
+     When I run the command "grunt spec:module:acme/person"
+     Then I should see "Creating module spec in: spec/acme/person.js"
+      And the file "spec/acme/person.js" should have been created with these contents:
 """
 define(['spec-module!acme/person'], function(person) {
 
