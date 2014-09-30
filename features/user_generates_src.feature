@@ -1,8 +1,10 @@
 Feature: Generating src
 
   Scenario: Being asked whether I want to create an object
-    Given there is a spec "acme/calculator"
-    """
+    Given there are no specs
+      And there are no source files
+      And there is a spec "acme/calculator"
+"""
 define(['spec-object!acme/calculator'], function(calculator) {
 
     describe('calculator', function() {
@@ -15,7 +17,6 @@ define(['spec-object!acme/calculator'], function(calculator) {
 
 });
 """
-    And there are no source files
     When I run the command "grunt spec:run"
     Then I should be asked whether I want to create the file
 
