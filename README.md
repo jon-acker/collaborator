@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jon-acker/collaborator.svg?branch=master)](https://travis-ci.org/jon-acker/collaborator)
+
 grunt-spec / collaborator
 =========================
 
