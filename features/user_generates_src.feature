@@ -1,4 +1,4 @@
-Feature: Triggering the generation of source files by runnning specs
+Feature: Triggering the generation of source files by running specs
 
   Background:
     Given there are no specs
