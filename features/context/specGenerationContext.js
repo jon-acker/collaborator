@@ -32,7 +32,7 @@ module.exports = function() {
 
 		currentprocessSpawner.on('close', function(code) {
 			if (!matchedExpectedOutput) {
-				callback('Failed to match expected output');
+				callback('Failed to match expected output, got: '+ commandOutput);
 			}
 		});
 
