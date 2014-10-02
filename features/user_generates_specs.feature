@@ -3,7 +3,7 @@ Feature: Generating specs
   Scenario: Generating an object spec
     Given there are no specs
      When I run the command "grunt spec:object:acme/finder"
-     Then I should see "Creating object spec in: spec/acme/finder.js"
+     Then I should see "Creaing object spec in: spec/acme/finder.js"
       And the file "spec/acme/finder.js" should have been created with these contents:
 """
 define(['spec-object!acme/finder'], function(finder) {
