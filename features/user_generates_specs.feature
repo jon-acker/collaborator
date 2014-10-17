@@ -37,3 +37,24 @@ define(['spec-module!acme/person'], function(person) {
 
 });
 """
+
+  Scenario: Generating a factory spec
+    Given there are no specs
+    When I run the command "grunt spec:factory:acme/personFactory"
+    Then I should see "Creating factory spec in: spec/acme/personFactory.js"
+    And the file "spec/acme/personFactory.js" should have been created with these contents:
+"""
+define(['spec-factory!acme/personFactory'], function(personFactory) {
+
+    describe('Acme PersonFactory', function() {
+
+        it('creates instances of objects', function() {
+            var createdObject = personFactory.create();
+
+            expect(typeof createdObject).toBe('object');
+        });
+
+    });
+
+});
+"""

@@ -50,8 +50,13 @@ module.exports = function(grunt) {
 					}
 					break;
 
+				case 'E_ERROR_SRC':
+					grunt.log.writeln(chalk.white.bgRed('Missing src file? ' + event.file));
+					break;
+
 				case 'E_NOENT_MODULE':
 				case 'E_NOENT_OBJECT':
+				case 'E_NOENT_FACTORY':
 					var type = '';
 
 					answer = readline.question([
@@ -69,6 +74,11 @@ module.exports = function(grunt) {
 							case 'E_NOENT_OBJECT':
 								srcWriter.writeObject(event.file);
 								type = 'object';
+								break;
+
+							case 'E_NOENT_FACTORY':
+								srcWriter.writeFactory(event.file);
+								type = 'factory';
 								break;
 						}
 
@@ -98,6 +108,7 @@ module.exports = function(grunt) {
 
 			case 'module':
 			case 'object':
+			case 'factory':
 				var specFilename = grunt.config().gruntSpec.spec + specName + '.js';
 
 				if (grunt.file.exists(specFilename)) {
@@ -112,9 +123,15 @@ module.exports = function(grunt) {
 
 				if (typeof answer === 'undefined' || answer.toUpperCase() === 'Y') {
 					grunt.log.writeln(chalk.white.bgBlue('Creating ' + command + ' spec in: ' + specFilename));
-					command === 'module' ? specWriter.writeModule(specFilename, specName) : specWriter.writeObject(specFilename, specName) ;
+					command === 'module'  && specWriter.writeModule(specFilename, specName);
+					command === 'object'  && specWriter.writeObject(specFilename, specName);
+					command === 'factory' && specWriter.writeFactory(specFilename, specName);
 				}
 				break;
+
+			default:
+				grunt.log.writeln(chalk.white.bgBlue('Unrecognized command: ' + command));
+				process.exit(1);
 		}
 
 	});

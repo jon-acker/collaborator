@@ -86,7 +86,7 @@ define(['spec-module!acme/person'], function(person) {
     describe('Acme Person', function() {
 
         it('is an instance of object', function() {
-            expect(test.constructor.name).toBe('Person');
+            expect(person.constructor.name).toBe('Person');
         });
 
     });
@@ -96,3 +96,24 @@ define(['spec-module!acme/person'], function(person) {
     When I run the command "grunt spec:run"
     Then I should be asked whether I want to create the file
 
+#################################################################
+
+  Scenario: Generating a factory source file
+    Given there is a spec "acme/personFactory"
+    """
+define(['spec-factory!acme/personFactory'], function(personFactory) {
+
+    describe('Acme Person', function() {
+
+        it('is an instance of object', function() {
+            var person = personFactory.create();
+
+            expect(person.constructor.name).toBe('Person');
+        });
+
+    });
+
+});
+"""
+    When I run the command "grunt spec:run"
+    Then I should be asked whether I want to create the file

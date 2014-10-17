@@ -86,6 +86,6 @@ module.exports = function() {
 
 		var fileContents = grunt.file.read(fileName);
 
-		callback(fileContents === expectedContents ? 0 : 'File contents did not match expectation');
+		callback(fileContents === expectedContents ? 0 : 'File contents did not match expectation:\n' + fileContents);
 	});
 };

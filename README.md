@@ -33,7 +33,7 @@ the skeleton of an Module-Under-Test (using an AMD object or module template)
 
 The specs generated automatically insert one of two RequireJs plugins: spec-module! or spec-object! depending on whether you use
 grunt spec:module:acme/something or spec:object:acme/something, respectively. Using these plugins, Grunt-spec is notified when the object to spec
-is missing it will offer to create it.
+is missing and will offer to create it.
 
 There are currently only two AMD patterns supported:
 
@@ -93,7 +93,7 @@ collaborator
 
 Grunt spec uses RequireJS as  DIC to provide collaborators for jasmine specs. By default, the tool will offer to generate a collaborate mock when using the collaborator! requirejs plugin.
 
-But you can edit the file collaborators.yml manually to provide a definition of your tests collaborators.
+You will need to edit the file collaborators.yml manually in order to provide the method names your tests collaborators.
 Specify the names of the collaborators methods explicitly, and a jasmine spy will be created for them.
 If you use 'null' for the method names, an existing module will be expected to be found in the corresponding src/ directory.
 
