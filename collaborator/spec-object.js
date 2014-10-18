@@ -10,9 +10,17 @@ define(function() {
 			req([requiredModule], function (module) {
 				loader(module);
 			}, function (e) {
-				throw JSON.stringify({error: 'E_NOENT_OBJECT', file: requiredModule});
-			});
+				var error = e.toString().match(/Error\:\sScript\serror\sfor\:\s*(.*)/);
 
+				if (error[1]) {
+					var expectedModule = error[1].replace(/^src\//, '');
+					if (expectedModule === requiredModule) {
+						throw JSON.stringify({error: 'E_NOENT_OBJECT', file: requiredModule});
+					} else {
+						throw JSON.stringify({error: 'E_ERROR_SRC', file: expectedModule});
+					}
+				}
+			});
 		}
 	}
 });

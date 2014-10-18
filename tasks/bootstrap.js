@@ -25,6 +25,7 @@ module.exports.configure = function(moduleRoot) {
 			templateOptions: {
 				requireConfigFile: grunt.config('grunt-spec-config'),
 				requireConfig: {
+					baseUrl: srcDir,
 					specDirSrc: srcDir,
 					specDirSpec: specDir,
 					paths: {
