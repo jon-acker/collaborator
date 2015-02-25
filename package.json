@@ -4,7 +4,7 @@
   "description": "Grunt plugin which provides a spec/object generator and a simple mechanism for using requirejs as a DI container to provide jasmine spies to module specs",
   "main": "plugin.js",
   "dependencies": {
-    "chalk": "^0.5.1",
+    "chalk": "^1.0.0",
     "grunt-cli": "^0.1.13",
     "readline-sync": "^0.4.5"
   },
