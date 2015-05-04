@@ -2,8 +2,8 @@ var grunt = require('grunt');
 require.config({
 
     deps: [
-        'collaborators',
-        'requirements',
+        '../.grunt/grunt-spec/collaborators',
+        '../.grunt/grunt-spec/requirements',
         'collaborator/builder'
     ],
     callback: function(collaborators, requirements, collaboratorBuilder) {

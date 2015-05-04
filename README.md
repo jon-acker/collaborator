@@ -26,7 +26,7 @@ grunt-spec
 ----------
 
 Grunt-spec is a tool designed to facilitate a workflow for developing Javascript AMD modules using TDD (in particular, Mockist TDD).
-Grunt-spec was inspired by the PhpSpec and the positive workflow it facilitates for driving PHP application design ([PhpSpec](http://www.phpspec.net/) is courtesy of Marcello Duarte and Konstantin Kudryashov).
+Grunt-spec was inspired by the PhpSpec and the positive workflow it facilitates for driving PHP application design ([PhpSpec](http://www.phpspec.net/). 
 
 This tool uses Jasmine, Grunt and RequireJs under the hood. It will generate Jasmine spec files in the folder determined by your modules namespace (e.g. acme/page/formatter), using grunt spec plugin. When the specs are run (grunt spec:run) the tool will offer to generate
 the skeleton of an Module-Under-Test (using an AMD object or module template)
