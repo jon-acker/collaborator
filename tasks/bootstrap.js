@@ -32,9 +32,10 @@ module.exports.configure = function(moduleRoot) {
 						collaborator: collaboratorRoot + 'collaborator',
 						'spec-object': collaboratorRoot + 'spec-object',
 						'spec-module': collaboratorRoot + 'spec-module',
-						'spec-factory': collaboratorRoot + 'spec-factory',
+						'spec-class': collaboratorRoot + 'spec-class',
 						'collaborator/definer': collaboratorRoot + 'definer',
-						'collaborators': collaboratorRoot + '../collaborators',
+                        'collaborators': collaboratorRoot + '../.grunt/grunt-spec/collaborators',
+                        'requirements': collaboratorRoot + '../.grunt/grunt-spec/requirements',
 						'collaborator/builder': collaboratorRoot + 'builder'
 					}
 				}

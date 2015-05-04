@@ -44,9 +44,15 @@ module.exports = function(grunt) {
 						"[Y/n]\n"
 					]);
 
-					if ((answer.toUpperCase() === 'Y')) {
-						collaboratorWriter.add(event.file);
-						grunt.log.writeln(chalk.blue('Collaborator interface  ' + event.file + ' created. Run grunt:run again'))
+					if ((answer.toLowerCase() !== 'n')) {
+                        collaboratorWriter.add(event.file);
+                        collaboratorWriter.addRequirement(event.file);
+						grunt.log.writeln(chalk.blue(
+                            'Collaborator interface  ' + event.file + ' created.\n' +
+                            'Add the module for whom this collaborator is mocked into requirements.yml\n' +
+                            'Add the methods you want to mock for ' + event.file +' in collaborators.yml\n' +
+                            'Run grunt:run again\n'
+                        ));
 					}
 					break;
 
@@ -56,7 +62,7 @@ module.exports = function(grunt) {
 
 				case 'E_NOENT_MODULE':
 				case 'E_NOENT_OBJECT':
-				case 'E_NOENT_FACTORY':
+				case 'E_NOENT_CLASS':
 					var type = '';
 
 					answer = readline.question([
@@ -64,7 +70,7 @@ module.exports = function(grunt) {
 						"[Y/n]"
 					]);
 
-					if ((answer.toUpperCase() === 'Y')) {
+					if ((answer.toLowerCase() !== 'n')) {
 						switch (event.error) {
 							case 'E_NOENT_MODULE':
 								srcWriter.writeModule(event.file);
@@ -76,9 +82,9 @@ module.exports = function(grunt) {
 								type = 'object';
 								break;
 
-							case 'E_NOENT_FACTORY':
-								srcWriter.writeFactory(event.file);
-								type = 'factory';
+							case 'E_NOENT_CLASS':
+								srcWriter.writeClass(event.file);
+								type = 'class';
 								break;
 						}
 
@@ -101,14 +107,19 @@ module.exports = function(grunt) {
 					grunt.file.write('collaborators.yml');
 				}
 
-				collaboratorWriter.write(grunt.file.readYAML('collaborators.yml'), moduleRoot);
+                if (!grunt.file.exists('requirements.yml')) {
+                    grunt.file.write('requirements.yml');
+                }
+
+                collaboratorWriter.writeCollaborators(grunt.file.readYAML('collaborators.yml'));
+                collaboratorWriter.writeRequirements(grunt.file.readYAML('requirements.yml'));
 
 				grunt.task.run('jasmine');
 				break;
 
 			case 'module':
 			case 'object':
-			case 'factory':
+			case 'class':
 				var specFilename = grunt.config().gruntSpec.spec + specName + '.js';
 
 				if (grunt.file.exists(specFilename)) {
@@ -125,7 +136,7 @@ module.exports = function(grunt) {
 					grunt.log.writeln(chalk.white.bgBlue('Creating ' + command + ' spec in: ' + specFilename));
 					command === 'module'  && specWriter.writeModule(specFilename, specName);
 					command === 'object'  && specWriter.writeObject(specFilename, specName);
-					command === 'factory' && specWriter.writeFactory(specFilename, specName);
+					command === 'class' && specWriter.writeClass(specFilename, specName);
 				}
 				break;
 

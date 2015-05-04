@@ -9,12 +9,13 @@ module.exports = function() {
 	var matchedExpectedOutput = false;
 
 	this.Given(/^there are no specs$/, function (callback) {
-		processSpawner.exec('rm -rf spec/', callback);
+        processSpawner.exec('rm -rf spec/', callback);
 	});
 
 	this.Given(/^there are no source files/, function (callback) {
 		processSpawner.exec('rm -rf src/', callback);
 	});
+
 
 	this.When(/^I run the command "([^"]*)"$/, function (command, callback) {
 		var cmd = command.split(/\s/);
@@ -66,12 +67,12 @@ module.exports = function() {
 		});
 	});
 
-	this.When(/^I say that I do want to create the file$/, function (callback) {
+	this.When(/^I say that I do want to (.*)$/, function (text, callback) {
 		currentprocessSpawner.stdin.write('Y\n');
 		callback();
 	});
 
-	this.When(/^I say that I do not want to create the file$/, function (callback) {
+	this.When(/^I say that I do not want to (.*)$/, function (text, callback) {
 		currentprocessSpawner.stdin.write('N\n');
 		callback();
 	});
@@ -83,9 +84,7 @@ module.exports = function() {
 	});
 
 	this.Then(/^the file "([^"]*)" should have been created with these contents:$/, function (fileName, expectedContents, callback) {
-
 		var fileContents = grunt.file.read(fileName);
-
-		callback(fileContents === expectedContents ? 0 : 'File contents did not match expectation:\n' + fileContents);
+		callback(fileContents == expectedContents ? 0 : 'File contents did not match expectation:\n' + fileContents);
 	});
 };

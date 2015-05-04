@@ -65,8 +65,8 @@ module.exports.writeObject= function writeObjectSpec(specFilename, specName) {
  * @param {string} specFilename
  * @param {string} specName
  */
-module.exports.writeFactory = function writeFactorySpec(specFilename, specName) {
-	var moduleTemplate = grunt.file.read(grunt.config().moduleRoot + 'tasks/writer/template/factory.js.spec');
+module.exports.writeClass = function writeClass(specFilename, specName) {
+	var moduleTemplate = grunt.file.read(grunt.config().moduleRoot + 'tasks/writer/template/class.js.spec');
 	var namespaceParts = specName.split('/');
 	var moduleName = namespaceParts[namespaceParts.length - 1];
 	var capitalizedNamespaceParts = capitalizeNamespaceParts(namespaceParts);
@@ -78,7 +78,7 @@ module.exports.writeFactory = function writeFactorySpec(specFilename, specName) 
 			specName: specName,
 			moduleName: moduleName,
 			longModuleName: capitalizedNamespaceParts.join(' '),
-			moduleNameUC: capitalizedNamespaceParts[capitalizedNamespaceParts.length-1]
+			moduleNameLC: moduleName.toLowerCase()
 		})
 	)
 };

@@ -10,7 +10,7 @@ define(function() {
 			req([requiredModule], function (module) {
 				loader(module);
 			}, function (e) {
-				throw JSON.stringify({error: 'E_NOENT_FACTORY', file: requiredModule});
+				throw JSON.stringify({error: 'E_NOENT_CLASS', file: requiredModule});
 			});
 
 		}
