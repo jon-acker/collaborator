@@ -1,6 +1,6 @@
 define(function() {
 
-    return function Person() {
+    return function {{moduleNameUC}}() {
 
         //@todo: create methods here
 
