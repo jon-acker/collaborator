@@ -72,7 +72,6 @@ Now run again:
 grunt spec:run
 ```
 
-
 On running "grunt spec:run", the spec-module! requirejs plugin will generate button module to be created in src/acme/button.js if none exists yet. The default pattern is an object factory which will look like this:
 ```javascript
 define(function() {
@@ -84,6 +83,12 @@ define(function() {
 });
 ```
 
+Run "grunt spec:run" again, and you should see your first passing spec:
+```
+Acme Button
+✓ is an instance of Button
+```
+
 collaborator
 ------------
 
@@ -91,7 +96,7 @@ Grunt spec uses RequireJS as  DIC to provide collaborators for jasmine specs. By
 
 You will need to edit the file collaborators.yml manually in order to provide the method names your tests collaborators.
 Specify the names of the collaborators methods explicitly, and a jasmine spy will be created for them.
-If you use 'null' for the method names, an existing module will be expected to be found in the corresponding src/ directory.
+If omit the name of your module from collaborators.yml, an existing module will be expected to be found in the corresponding src/ directory.
 
 ```javascript
 define(['collaborator!acme/parser', 'spec-object!acme/calculator'], function(calculator) {
@@ -107,7 +112,7 @@ define(['collaborator!acme/parser', 'spec-object!acme/calculator'], function(cal
 });
 ```
 
-Specify all expected collaborators explicitly in the file collaborators.yml, although the collaborator! plugin will add these for you automatically:
+When you run "grunt spec:run" the collaborator! plugin will trigger the system to ask if you want to create the collaborator. Answer 'Y'. This will add the name of the module with an empty array for methods. We edit the file to specify that our parser will have a method "parse":
 
 ```yaml
 acme/parser: [parse]
@@ -122,6 +127,17 @@ acme/calculator: [acme/parser]
 ```
 
 This tells RequireJS: when "acme/calculator" requires "acme/parser", then give it the spy instead. If you remove this requirment, it will expect to find acme/parser.js in the src/ folder.
+
+Run "grunt spec:run" again, and the spec shold pass.
+
+Viewing Jasmine HTML test runner in the Browser:
+===============================================
+
+Once "grunt spec:run" has finished executing, a filed called _SpecRunner.html is created in the projects root folder, you can load and run the specs in your browser by browsing to:
+
+```
+file:///project/folder/_SpecRunner.html
+```
 
 Configuring src and spec folders:
 =====================================
