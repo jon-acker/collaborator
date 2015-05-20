@@ -1,11 +1,11 @@
-define(['spec-class!{{{specName}}}'], function({{{moduleName}}}) {
+define(['spec-class!{{{specName}}}'], function({{{moduleNameUC}}}) {
 
     describe('{{{longModuleName}}}', function() {
 
-        it('is an instance of {{{moduleName}}}', function() {
-            var {{{moduleNameLC}}} = new {{{moduleName}}}();
+        it('is an instance of {{{moduleNameUC}}}', function() {
+            var {{{moduleNameLC}}} = new {{{moduleNameUC}}}();
 
-            expect({{{moduleNameLC}}} instanceof {{{moduleName}}}).toBe(true);
+            expect({{{moduleNameLC}}} instanceof {{{moduleNameUC}}}).toBe(true);
         });
 
     });

@@ -78,7 +78,8 @@ module.exports.writeClass = function writeClass(specFilename, specName) {
 			specName: specName,
 			moduleName: moduleName,
 			longModuleName: capitalizedNamespaceParts.join(' '),
-			moduleNameLC: moduleName.toLowerCase()
+			moduleNameLC: moduleName.toLowerCase(),
+            moduleNameUC: capitalizedNamespaceParts[capitalizedNamespaceParts.length-1]
 		})
 	)
 };
