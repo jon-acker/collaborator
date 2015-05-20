@@ -8,14 +8,10 @@ You will need to install grunt:
 sudo npm install -g grunt
 ```
 
-And create a file called "Gruntfile.js" with these contents:
-```javascript
-module.exports = function(grunt) {
-    'use strict';
-    grunt.loadNpmTasks('grunt-spec');
-};
+And create a default "Gruntfile.js" the dist version
+```bash
+cp node_modules/grunt-spec/Gruntfile.js.dist Gruntfile.js
 ```
-
 
 To install the required modules run:
 ```
@@ -112,9 +108,19 @@ define(['collaborator!acme/parser', 'spec-object!acme/calculator'], function(cal
 ```
 
 Specify all expected collaborators explicitly in the file collaborators.yml, although the collaborator! plugin will add these for you automatically:
+
 ```yaml
 acme/parser: [parse]
 ```
+
+Edit the file requirements.yml to configure whether the your SuS will require the real collaborator or the spy specified in collaborators.yml
+If, for example your SuS is acme/calculator and its collaborating module is acme/parser, and you when the test runs you want your calculator module to require the fake not the real acme/parser, edit requirements.yml like so:
+
+```yaml
+acme/calculator: [acme/parser]
+```
+
+This tells RequireJS: when "acme/calculator" requires "acme/parser", then give it the spy instead. If you remove this requirment, it will expect to find acme/parser.js in the src/ folder.
 
 Configuring src and spec folders:
 =====================================
