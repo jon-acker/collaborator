@@ -8,8 +8,8 @@ You will need to install grunt:
 sudo npm install -g grunt
 ```
 
-And create a default "Gruntfile.js" the dist version
-```bash
+And create a default "Gruntfile.js" by copying the dist version
+```sh
 cp node_modules/grunt-spec/Gruntfile.js.dist Gruntfile.js
 ```
 
@@ -113,7 +113,8 @@ Specify all expected collaborators explicitly in the file collaborators.yml, alt
 acme/parser: [parse]
 ```
 
-Edit the file requirements.yml to configure whether the your SuS will require the real collaborator or the spy specified in collaborators.yml
+Edit the file requirements.yml to configure whether the your SuS (Subject under Spec) will require the real collaborator or the spy specified in collaborators.yml
+
 If, for example your SuS is acme/calculator and its collaborating module is acme/parser, and you when the test runs you want your calculator module to require the fake not the real acme/parser, edit requirements.yml like so:
 
 ```yaml
