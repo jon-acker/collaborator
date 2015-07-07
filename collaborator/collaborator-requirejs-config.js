@@ -6,8 +6,8 @@ require.config({
         '../.grunt/grunt-spec/requirements',
         'collaborator/builder'
     ],
-    callback: function(collaborators, requirements, collaboratorBuilder) {
-		require.config({
+    callback: function (collaborators, requirements, collaboratorBuilder) {
+        require.config({
             map: collaboratorBuilder.createDependencyMap(collaborators, requirements)
         });
     }

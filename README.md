@@ -8,14 +8,14 @@ You will need to install grunt:
 sudo npm install -g grunt
 ```
 
+To install the required modules run:
+```
+npm install -s grunt-spec
+```
+
 And create a default "Gruntfile.js" by copying the dist version
 ```sh
 cp node_modules/grunt-spec/Gruntfile.js.dist Gruntfile.js
-```
-
-To install the required modules run:
-```
-npm install grunt-spec
 ```
 
 grunt-spec
@@ -137,6 +137,13 @@ Once "grunt spec:run" has finished executing, a filed called _SpecRunner.html is
 
 ```
 file:///project/folder/_SpecRunner.html
+```
+
+Running specs in specific folders or files:
+===========================================
+```
+grunt spec:run:acme/*
+grunt spec:run:acme/parser.js
 ```
 
 Configuring src and spec folders:

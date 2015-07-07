@@ -45,10 +45,10 @@ module.exports.writeRequirements = function writeRequirements(requirements) {
  * @param {string} modulePath
  */
 module.exports.add = function addCollaborator(modulePath) {
-	var collaborators = grunt.file.readYAML('collaborators.yml');
-	collaborators = collaborators || {};
-	collaborators[modulePath] = [];
-	grunt.file.write('collaborators.yml', jsYaml.safeDump(collaborators, {flowLevel: 1}));
+    var collaborators = grunt.file.readYAML('collaborators.yml');
+    collaborators = collaborators || {};
+    collaborators[modulePath] = [];
+    grunt.file.write('collaborators.yml', jsYaml.safeDump(collaborators, {flowLevel: 1}));
 };
 
 /**
