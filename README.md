@@ -13,10 +13,7 @@ To install the required modules run:
 npm install -s grunt-spec
 ```
 
-And create a default "Gruntfile.js" by copying the dist version
-```sh
-cp node_modules/grunt-spec/Gruntfile.js.dist Gruntfile.js
-```
+The default "Gruntfile.js" is created for you from git@github.com:jon-acker/grunt-spec-gruntfile.git
 
 grunt-spec
 ----------
@@ -149,7 +146,7 @@ grunt spec:run:acme/parser.js
 Configuring src and spec folders:
 =====================================
 
-By default grunt-spec assumes src/ and spec/ folders in relation to where grunt-spec is run. To override the defaults, add the following to your Gruntfile.js:
+By default grunt-spec assumes src/ and spec/ folders in relation to where grunt-spec is run. To override the defaults modify your Gruntfile.js:
 ```
 grunt.initConfig({
     gruntSpec: {
