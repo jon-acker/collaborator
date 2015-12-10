@@ -1,12 +1,13 @@
 {
   "name": "grunt-spec",
-  "version": "0.5.3",
+  "version": "0.7.2",
   "description": "Grunt plugin which provides a spec/object generator and a simple mechanism for using requirejs as a DI container to provide jasmine spies to module specs",
   "main": "plugin.js",
   "dependencies": {
-    "chalk": "^0.5.1",
+    "chalk": "^1.0.0",
     "grunt-cli": "^0.1.13",
-    "readline-sync": "^0.4.5"
+    "readline-sync": "0.7.5",
+    "grunt-spec-gruntfile": "git://github.com/jon-acker/grunt-spec-gruntfile#master"
   },
   "repository": {
     "type": "git",
@@ -14,12 +15,12 @@
   },
   "peerDependencies": {
     "grunt": "^0.4.5",
-    "grunt-contrib-jasmine": "^0.7.0",
-    "grunt-lib-phantomjs": "^0.6.0",
-    "grunt-template-jasmine-requirejs": "^0.2.0",
-    "js-yaml": "^3.2.2",
-    "mustache": "^0.8.2",
-    "read-yaml": "^0.2.0"
+    "grunt-contrib-jasmine": "^0.8.2",
+    "grunt-lib-phantomjs": "^0.7.0",
+    "grunt-template-jasmine-requirejs": "^0.2.3",
+    "js-yaml": "^3.3.0",
+    "mustache": "~2.0.0",
+    "read-yaml": "~1.0.0"
   },
   "keywords": [
     "requirejs",
@@ -35,15 +36,15 @@
   "devDependencies": {
     "cucumber": "latest",
     "grunt": "^0.4.5",
-    "grunt-contrib-jasmine": "^0.7.0",
-    "grunt-lib-phantomjs": "^0.6.0",
-    "grunt-template-jasmine-requirejs": "^0.2.0",
-    "js-yaml": "^3.2.2",
-    "mustache": "^0.8.2",
-    "read-yaml": "^0.2.0",
-    "zombie": "^2.0.0-alpha31"
+    "grunt-contrib-jasmine": "^0.8.2",
+    "grunt-lib-phantomjs": "^0.7.0",
+    "grunt-template-jasmine-requirejs": "^0.2.3",
+    "js-yaml": "^3.3.0",
+    "mustache": "~2.0.0",
+    "read-yaml": "~1.0.0"
   },
   "scripts": {
-	"test": "node_modules/.bin/cucumber.js"
+	"test": "node_modules/.bin/cucumber.js",
+	"postinstall": "cp node_modules/grunt-spec-gruntfile/Gruntfile.js.dist ../../Gruntfile.js"
   }
 }

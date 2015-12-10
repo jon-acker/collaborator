@@ -8,25 +8,18 @@ You will need to install grunt:
 sudo npm install -g grunt
 ```
 
-And create a file called "Gruntfile.js" with these contents:
-```javascript
-module.exports = function(grunt) {
-    'use strict';
-    grunt.loadNpmTasks('grunt-spec');
-};
-```
-
-
 To install the required modules run:
 ```
-npm install grunt-spec
+npm install -s grunt-spec
 ```
+
+The default "Gruntfile.js" is created for you from git@github.com:jon-acker/grunt-spec-gruntfile.git
 
 grunt-spec
 ----------
 
 Grunt-spec is a tool designed to facilitate a workflow for developing Javascript AMD modules using TDD (in particular, Mockist TDD).
-Grunt-spec was inspired by the PhpSpec and the positive workflow it facilitates for driving PHP application design ([PhpSpec](http://www.phpspec.net/) is courtesy of Marcello Duarte and Konstantin Kudryashov).
+Grunt-spec was inspired by the PhpSpec and the positive workflow it facilitates for driving PHP application design [PhpSpec](http://www.phpspec.net/). 
 
 This tool uses Jasmine, Grunt and RequireJs under the hood. It will generate Jasmine spec files in the folder determined by your modules namespace (e.g. acme/page/formatter), using grunt spec plugin. When the specs are run (grunt spec:run) the tool will offer to generate
 the skeleton of an Module-Under-Test (using an AMD object or module template)
@@ -76,7 +69,6 @@ Now run again:
 grunt spec:run
 ```
 
-
 On running "grunt spec:run", the spec-module! requirejs plugin will generate button module to be created in src/acme/button.js if none exists yet. The default pattern is an object factory which will look like this:
 ```javascript
 define(function() {
@@ -88,6 +80,12 @@ define(function() {
 });
 ```
 
+Run "grunt spec:run" again, and you should see your first passing spec:
+```
+Acme Button
+✓ is an instance of Button
+```
+
 collaborator
 ------------
 
@@ -95,7 +93,7 @@ Grunt spec uses RequireJS as  DIC to provide collaborators for jasmine specs. By
 
 You will need to edit the file collaborators.yml manually in order to provide the method names your tests collaborators.
 Specify the names of the collaborators methods explicitly, and a jasmine spy will be created for them.
-If you use 'null' for the method names, an existing module will be expected to be found in the corresponding src/ directory.
+If omit the name of your module from collaborators.yml, an existing module will be expected to be found in the corresponding src/ directory.
 
 ```javascript
 define(['collaborator!acme/parser', 'spec-object!acme/calculator'], function(calculator) {
@@ -111,15 +109,44 @@ define(['collaborator!acme/parser', 'spec-object!acme/calculator'], function(cal
 });
 ```
 
-Specify all expected collaborators explicitly in the file collaborators.yml, although the collaborator! plugin will add these for you automatically:
+When you run "grunt spec:run" the collaborator! plugin will trigger the system to ask if you want to create the collaborator. Answer 'Y'. This will add the name of the module with an empty array for methods. We edit the file to specify that our parser will have a method "parse":
+
 ```yaml
 acme/parser: [parse]
+```
+
+Edit the file requirements.yml to configure whether the your SuS (Subject under Spec) will require the real collaborator or the spy specified in collaborators.yml
+
+If, for example your SuS is acme/calculator and its collaborating module is acme/parser, and you when the test runs you want your calculator module to require the fake not the real acme/parser, edit requirements.yml like so:
+
+```yaml
+acme/calculator: [acme/parser]
+```
+
+This tells RequireJS: when "acme/calculator" requires "acme/parser", then give it the spy instead. If you remove this requirment, it will expect to find acme/parser.js in the src/ folder.
+
+Run "grunt spec:run" again, and the spec shold pass.
+
+Viewing Jasmine HTML test runner in the Browser:
+===============================================
+
+Once "grunt spec:run" has finished executing, a filed called _SpecRunner.html is created in the projects root folder, you can load and run the specs in your browser by browsing to:
+
+```
+file:///project/folder/_SpecRunner.html
+```
+
+Running specs in specific folders or files:
+===========================================
+```
+grunt spec:run:acme/*
+grunt spec:run:acme/parser.js
 ```
 
 Configuring src and spec folders:
 =====================================
 
-By default grunt-spec assumes src/ and spec/ folders in relation to where grunt-spec is run. To override the defaults, add the following to your Gruntfile.js:
+By default grunt-spec assumes src/ and spec/ folders in relation to where grunt-spec is run. To override the defaults modify your Gruntfile.js:
 ```
 grunt.initConfig({
     gruntSpec: {

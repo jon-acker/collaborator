@@ -9,10 +9,10 @@ var mustache = require('mustache');
  * @returns {array}
  */
 function capitalizeNamespaceParts(namespaceParts) {
-	var capitalizedNamespaceParts = namespaceParts.map(function (part) {
-		return part.charAt(0).toUpperCase() + part.slice(1);
-	});
-	return capitalizedNamespaceParts;
+    var capitalizedNamespaceParts = namespaceParts.map(function (part) {
+        return part.charAt(0).toUpperCase() + part.slice(1);
+    });
+    return capitalizedNamespaceParts;
 }
 
 /**
@@ -22,21 +22,21 @@ function capitalizeNamespaceParts(namespaceParts) {
  */
 
 module.exports.writeModule = function writeModuleSpec(specFilename, specName) {
-	var moduleTemplate = grunt.file.read(grunt.config().moduleRoot + 'tasks/writer/template/module.js.spec');
-	var namespaceParts = specName.split('/');
-	var moduleName = namespaceParts[namespaceParts.length - 1];
-	var capitalizedNamespaceParts = capitalizeNamespaceParts(namespaceParts);
+    var moduleTemplate = grunt.file.read(grunt.config().moduleRoot + 'tasks/writer/template/module.js.spec');
+    var namespaceParts = specName.split('/');
+    var moduleName = namespaceParts[namespaceParts.length - 1];
+    var capitalizedNamespaceParts = capitalizeNamespaceParts(namespaceParts);
 
-	grunt.file.write(
-		specFilename,
-		mustache.render(moduleTemplate, {
-			specFilename: specFilename,
-			specName: specName,
-			moduleName: moduleName,
-			longModuleName: capitalizedNamespaceParts.join(' '),
-			moduleNameUC: capitalizedNamespaceParts[capitalizedNamespaceParts.length-1]
-		})
-	)
+    grunt.file.write(
+        specFilename,
+        mustache.render(moduleTemplate, {
+            specFilename: specFilename,
+            specName: specName,
+            moduleName: moduleName,
+            longModuleName: capitalizedNamespaceParts.join(' '),
+            moduleNameUC: capitalizedNamespaceParts[capitalizedNamespaceParts.length - 1]
+        })
+    )
 };
 
 /**
@@ -44,20 +44,20 @@ module.exports.writeModule = function writeModuleSpec(specFilename, specName) {
  * @param {string} specFilename
  * @param {string} specName
  */
-module.exports.writeObject= function writeObjectSpec(specFilename, specName) {
-	var moduleTemplate = grunt.file.read(grunt.config().moduleRoot + 'tasks/writer/template/object.js.spec');
-	var namespaceParts = specName.split('/');
-	var moduleName = namespaceParts[namespaceParts.length - 1];
+module.exports.writeObject = function writeObjectSpec(specFilename, specName) {
+    var moduleTemplate = grunt.file.read(grunt.config().moduleRoot + 'tasks/writer/template/object.js.spec');
+    var namespaceParts = specName.split('/');
+    var moduleName = namespaceParts[namespaceParts.length - 1];
 
-	grunt.file.write(
-		specFilename,
-		mustache.render(moduleTemplate, {
-			specFilename: specFilename,
-			specName: specName,
-			moduleName: moduleName,
-			longModuleName: namespaceParts.join(' ')
-		})
-	)
+    grunt.file.write(
+        specFilename,
+        mustache.render(moduleTemplate, {
+            specFilename: specFilename,
+            specName: specName,
+            moduleName: moduleName,
+            longModuleName: namespaceParts.join(' ')
+        })
+    )
 };
 
 /**
@@ -65,20 +65,21 @@ module.exports.writeObject= function writeObjectSpec(specFilename, specName) {
  * @param {string} specFilename
  * @param {string} specName
  */
-module.exports.writeFactory = function writeFactorySpec(specFilename, specName) {
-	var moduleTemplate = grunt.file.read(grunt.config().moduleRoot + 'tasks/writer/template/factory.js.spec');
-	var namespaceParts = specName.split('/');
-	var moduleName = namespaceParts[namespaceParts.length - 1];
-	var capitalizedNamespaceParts = capitalizeNamespaceParts(namespaceParts);
+module.exports.writeClass = function writeClass(specFilename, specName) {
+    var moduleTemplate = grunt.file.read(grunt.config().moduleRoot + 'tasks/writer/template/class.js.spec');
+    var namespaceParts = specName.split('/');
+    var moduleName = namespaceParts[namespaceParts.length - 1];
+    var capitalizedNamespaceParts = capitalizeNamespaceParts(namespaceParts);
 
-	grunt.file.write(
-		specFilename,
-		mustache.render(moduleTemplate, {
-			specFilename: specFilename,
-			specName: specName,
-			moduleName: moduleName,
-			longModuleName: capitalizedNamespaceParts.join(' '),
-			moduleNameUC: capitalizedNamespaceParts[capitalizedNamespaceParts.length-1]
-		})
-	)
+    grunt.file.write(
+        specFilename,
+        mustache.render(moduleTemplate, {
+            specFilename: specFilename,
+            specName: specName,
+            moduleName: moduleName,
+            longModuleName: capitalizedNamespaceParts.join(' '),
+            moduleNameLC: moduleName.toLowerCase(),
+            moduleNameUC: capitalizedNamespaceParts[capitalizedNamespaceParts.length - 1]
+        })
+    )
 };

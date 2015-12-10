@@ -2,12 +2,13 @@ var grunt = require('grunt');
 require.config({
 
     deps: [
-        'collaborators',
+        '../.grunt/grunt-spec/collaborators',
+        '../.grunt/grunt-spec/requirements',
         'collaborator/builder'
     ],
-    callback: function(collaborators, collaboratorBuilder) {
-		require.config({
-            map: collaboratorBuilder.createDependencyMap(collaborators)
+    callback: function (collaborators, requirements, collaboratorBuilder) {
+        require.config({
+            map: collaboratorBuilder.createDependencyMap(collaborators, requirements)
         });
     }
 });

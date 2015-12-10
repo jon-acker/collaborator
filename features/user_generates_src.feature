@@ -98,17 +98,17 @@ define(['spec-module!acme/person'], function(person) {
 
 #################################################################
 
-  Scenario: Generating a factory source file
-    Given there is a spec "acme/personFactory"
+  Scenario: Being asked whether I want to create the class
+    Given there is a spec "acme/Person"
     """
-define(['spec-factory!acme/personFactory'], function(personFactory) {
+define(['spec-class!acme/Person'], function(Person) {
 
     describe('Acme Person', function() {
 
-        it('is an instance of object', function() {
-            var person = personFactory.create();
+        it('is an instance of Person', function() {
+            var person = new Person();
 
-            expect(person.constructor.name).toBe('Person');
+            expect(person instanceof Person).toBe(true);
         });
 
     });
@@ -117,3 +117,38 @@ define(['spec-factory!acme/personFactory'], function(personFactory) {
 """
     When I run the command "grunt spec:run"
     Then I should be asked whether I want to create the file
+
+#################################################################
+
+  Scenario: Generating a class source file
+    Given there is a spec "acme/Person"
+    """
+define(['spec-class!acme/Person'], function(Person) {
+
+    describe('Acme Person', function() {
+
+        it('is an instance of object', function() {
+            var person = new Person();
+
+            expect(person instanceof Person).toBe(true);
+        });
+
+    });
+
+});
+"""
+    When I run the command "grunt spec:run"
+     And I say that I do want to create the file
+    Then I should see "Run grunt spec:run again"
+     And the file "src/acme/Person.js" should have been created with these contents:
+"""
+define(function() {
+
+    return function Person() {
+
+        //@todo: create methods here
+
+    }
+
+});
+"""

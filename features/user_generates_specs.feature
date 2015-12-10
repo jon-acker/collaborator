@@ -38,20 +38,20 @@ define(['spec-module!acme/person'], function(person) {
 });
 """
 
-  Scenario: Generating a factory spec
+  Scenario: Generating a class spec
     Given there are no specs
-    When I run the command "grunt spec:factory:acme/personFactory"
-    Then I should see "Creating factory spec in: spec/acme/personFactory.js"
-    And the file "spec/acme/personFactory.js" should have been created with these contents:
+    When I run the command "grunt spec:class:acme/Person"
+    Then I should see "Creating class spec in: spec/acme/Person.js"
+    And the file "spec/acme/Person.js" should have been created with these contents:
 """
-define(['spec-factory!acme/personFactory'], function(personFactory) {
+define(['spec-class!acme/Person'], function(Person) {
 
-    describe('Acme PersonFactory', function() {
+    describe('Acme Person', function() {
 
-        it('creates instances of objects', function() {
-            var createdObject = personFactory.create();
+        it('is an instance of Person', function() {
+            var person = new Person();
 
-            expect(typeof createdObject).toBe('object');
+            expect(person instanceof Person).toBe(true);
         });
 
     });

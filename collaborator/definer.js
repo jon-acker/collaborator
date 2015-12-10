@@ -1,4 +1,4 @@
-define(function() {
+define(function () {
     'use strict'
 
     return {
@@ -15,9 +15,13 @@ define(function() {
                 define(DOUBLES_PREFIX + requiredModule, [requiredModule], function (module) {
                     return jasmine.createSpyObj(requiredModule, Object.keys(module));
                 });
-            } else {
+            } else if (requiredMethods.length > 0) {
                 define(DOUBLES_PREFIX + requiredModule, function () {
                     return jasmine.createSpyObj(requiredModule, requiredMethods);
+                });
+            } else {
+                define(DOUBLES_PREFIX + requiredModule, function () {
+                    return jasmine.createSpy(requiredModule);
                 });
             }
         }

@@ -9,15 +9,15 @@ var mustache = require('mustache');
  * @param moduleName
  */
 module.exports.writeModule = function writeSrcModule(fileName) {
-	var srcTemplate = grunt.file.read(grunt.config().moduleRoot + 'tasks/writer/template/module.js.src');
-	var moduleName = fileName.split('\/').pop();
+    var srcTemplate = grunt.file.read(grunt.config().moduleRoot + 'tasks/writer/template/module.js.src');
+    var moduleName = fileName.split('\/').pop();
 
-	grunt.file.write(
-		grunt.config().gruntSpec.src + fileName + '.js',
-		mustache.render(srcTemplate, {
-			moduleNameUC: moduleName.charAt(0).toUpperCase() + moduleName.slice(1)
-		})
-	);
+    grunt.file.write(
+        grunt.config().gruntSpec.src + fileName + '.js',
+        mustache.render(srcTemplate, {
+            moduleNameUC: moduleName.charAt(0).toUpperCase() + moduleName.slice(1)
+        })
+    );
 };
 
 
@@ -26,10 +26,28 @@ module.exports.writeModule = function writeSrcModule(fileName) {
  *
  * @param fileName
  */
-module.exports.writeObject = function writeSrcModule(fileName) {
-	var srcTemplate = grunt.file.read(grunt.config().moduleRoot + 'tasks/writer/template/object.js.src')
-	grunt.file.write(
-		grunt.config().gruntSpec.src + fileName + '.js',
-		mustache.render(srcTemplate)
-	);
+module.exports.writeObject = function writeObject(fileName) {
+    var srcTemplate = grunt.file.read(grunt.config().moduleRoot + 'tasks/writer/template/object.js.src')
+    grunt.file.write(
+        grunt.config().gruntSpec.src + fileName + '.js',
+        mustache.render(srcTemplate)
+    );
+};
+
+
+/**
+ * Write src file for class example
+ *
+ * @param fileName
+ */
+module.exports.writeClass = function writeClass(fileName) {
+    var srcTemplate = grunt.file.read(grunt.config().moduleRoot + 'tasks/writer/template/class.js.src');
+    var moduleName = fileName.split('\/').pop();
+
+    grunt.file.write(
+        grunt.config().gruntSpec.src + fileName + '.js',
+        mustache.render(srcTemplate, {
+            moduleNameUC: moduleName.charAt(0).toUpperCase() + moduleName.slice(1)
+        })
+    );
 };
