@@ -133,3 +133,17 @@ Caveats
 =======
 
 Since "collaborator" creates a spy definition of each of the collaborators in the double/ base-namespace, you cannot currently use this base-namespace for anything else (but acme/double/etc is fine)
+
+
+Developing
+==========
+
+```
+cp Gruntfile.js.test Gruntfile.js
+```
+
+```
+node_modules/.bin/cucumber-js
+```
+
+Make sure all current scenarios pass before proceeding with a new feature
