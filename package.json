@@ -6,7 +6,7 @@
   "dependencies": {
     "chalk": "^1.0.0",
     "grunt-cli": "^0.1.13",
-    "readline-sync": "0.7.5",
+    "readline-sync": "^1.2",
     "grunt-spec-gruntfile": "git://github.com/jon-acker/grunt-spec-gruntfile#master"
   },
   "repository": {

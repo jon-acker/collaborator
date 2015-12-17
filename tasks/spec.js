@@ -13,6 +13,7 @@ module.exports = function (grunt) {
     var packageJsonPath = process.cwd() + '/package.json';
     var moduleName = 'grunt-spec';
     var moduleRoot = 'node_modules/' + moduleName + '/';
+    var childProcess = require('child_process');
 
     if (grunt.file.exists(packageJsonPath) && require(packageJsonPath).name === moduleName) {
         moduleRoot = '';
@@ -23,7 +24,7 @@ module.exports = function (grunt) {
     grunt.event.on('jasmine.specDone', function (event) {
         var matches;
 
-        if (event.status === 'failed' && (matches = event.failedExpectations[0].message.match(/is not a function \(evaluating \'(\w+)\.(\w+)\(.*\)/))) {
+        if (event.status === 'failed' && (matches = event.failedExpectations[0].message.match(/is not a function \(evaluating \'(\w+)\.(\w+)\(.*\).*in.file:\/\/(.*).\(/))) {
             grunt.log.writeln(chalk.red.bold('\n\nYour ' + chalk.green(matches[1]) + ' doesn\'t seem to have a method called ' + chalk.green(matches[2]) + '.\n'));
             process.exit(1);
         }
@@ -39,12 +40,12 @@ module.exports = function (grunt) {
                     event.file = event.file.replace(/^double\//, '');
                     grunt.log.writeln(chalk.white.bold.bgRed('Non existent module or collaborator: "' + event.file + '"\n'));
 
-                    answer = readline.question([
-                        chalk.white.bgBlue('Would you like me to set up a collaborator/spy?'),
-                        "[Y/n]\n"
-                    ]);
+                    answer = readline.question(
+                        chalk.white.bgBlue('Would you like me to set up a collaborator/spy? [Y/n]'),
+                        { defaultInput: 'Y' }
+                    );
 
-                    if ((answer.toLowerCase() !== 'n')) {
+                    if ((answer.toUpperCase() === 'Y')) {
                         collaboratorWriter.add(event.file);
                         collaboratorWriter.addRequirement(event.file);
                         grunt.log.writeln(chalk.blue(
@@ -65,12 +66,12 @@ module.exports = function (grunt) {
                 case 'E_NOENT_CLASS':
                     var type = '';
 
-                    answer = readline.question([
-                        chalk.white.bgBlue('Looks like ' + type + ' ' + event.file + ' does not exist, create it now?'),
-                        "[Y/n]"
-                    ]);
+                    answer = readline.question(
+                        chalk.white.bgBlue('Looks like ' + type + ' ' + event.file + ' does not exist, create it now? [Y/n]'),
+                        { defaultInput: 'Y' }
+                    );
 
-                    if ((answer.toLowerCase() !== 'n')) {
+                    if ((answer.toUpperCase() === 'Y')) {
                         switch (event.error) {
                             case 'E_NOENT_MODULE':
                                 srcWriter.writeModule(event.file);
@@ -98,8 +99,11 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('spec', 'Spec objects with Jasmine', function (command, specName) {
+    function getSpecPath(specName) {
+        return grunt.config().gruntSpec.spec + specName + '.js';
+    }
 
+    grunt.registerTask('spec', 'Spec objects with Jasmine', function (command, specName) {
         switch (command) {
             // run jasmine tests
             case 'run':
@@ -115,7 +119,7 @@ module.exports = function (grunt) {
                 collaboratorWriter.writeRequirements(grunt.file.readYAML('requirements.yml'));
 
                 if (specName) {
-                    grunt.config('jasmine.options.specs', 'spec/' + specName);
+                    grunt.config('jasmine.options.specs', getSpecPath(specName));
                 }
 
                 grunt.task.run('jasmine');
@@ -124,14 +128,14 @@ module.exports = function (grunt) {
             case 'module':
             case 'object':
             case 'class':
-                var specFilename = grunt.config().gruntSpec.spec + specName + '.js';
+                var specFilename = getSpecPath(specName);
 
                 if (grunt.file.exists(specFilename)) {
 
-                    var answer = readline.question([
-                        chalk.white.bgBlue('The file ' + specFilename + ' already exists, would you like to overwrite it?'),
-                        '[y/N]'
-                    ]);
+                    var answer = readline.question(
+                        chalk.white.bgBlue('The file ' + specFilename + ' already exists, would you like to overwrite it? [y/N]'),
+                        { defaultInput: 'N'}
+                    );
 
                     (answer.toUpperCase() === 'Y') && grunt.file.delete(specFilename);
                 }
