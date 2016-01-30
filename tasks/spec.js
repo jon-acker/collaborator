@@ -71,7 +71,7 @@ module.exports = function (grunt) {
                         { defaultInput: 'Y' }
                     );
 
-                    if ((answer.toUpperCase() === 'Y')) {
+                    if ((answer.toUpperCase() !== 'N')) {
                         switch (event.error) {
                             case 'E_NOENT_MODULE':
                                 srcWriter.writeModule(event.file);
