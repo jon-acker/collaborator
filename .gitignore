@@ -1,6 +1,6 @@
-Gruntfile.js
 .grunt/
-node_modules/
+Gruntfile.js
 _SpecRunner.html
 collaborators.yml
+node_modules/
 requirements.yml
