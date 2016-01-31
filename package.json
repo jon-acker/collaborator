@@ -41,7 +41,6 @@
     "readline-sync": "latest"
   },
   "scripts": {
-    "test": "node_modules/.bin/cucumber.js",
-    "postinstall": "cd ../../; npm install grunt-contrib-jasmine; cp node_modules/grunt-spec/Gruntfile.js.dist ./Gruntfile.js"
+    "test": "node_modules/.bin/cucumber.js"
   }
 }
