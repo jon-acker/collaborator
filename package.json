@@ -1,12 +1,12 @@
 {
   "name": "grunt-spec",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Grunt plugin which provides a spec/object generator and a simple mechanism for using requirejs as a DI container to provide jasmine spies to module specs",
   "main": "plugin.js",
   "dependencies": {
-    "chalk": "^1.0.0",
+    "chalk": "^1.1.1",
     "grunt-cli": "^0.1.13",
-    "readline-sync": "0.7.5",
+    "readline-sync": "latest",
     "grunt": "^0.4.5",
     "grunt-template-jasmine-requirejs": "^0.2.3",
     "phantomjs-prebuilt": "~2.1.0",
@@ -36,7 +36,9 @@
     "grunt-template-jasmine-requirejs": "^0.2.3",
     "js-yaml": "^3.3.0",
     "mustache": "~2.0.0",
-    "read-yaml": "~1.0.0"
+    "pty.js": "^0.3.0",
+    "read-yaml": "~1.0.0",
+    "readline-sync": "latest"
   },
   "scripts": {
     "test": "node_modules/.bin/cucumber.js",

@@ -4,7 +4,6 @@ module.exports = function (grunt) {
 
     var chalk = require('chalk');
     var readline = require('readline-sync');
-
     var specWriter = require('./writer/spec');
     var srcWriter = require('./writer/src');
     var collaboratorWriter = require('./writer/collaborator');
@@ -39,7 +38,6 @@ module.exports = function (grunt) {
                 case 'E_NOENT_COLLABORATOR':
                     event.file = event.file.replace(/^double\//, '');
                     grunt.log.writeln(chalk.white.bold.bgRed('Non existent module or collaborator: "' + event.file + '"\n'));
-
                     answer = readline.question(
                         chalk.white.bgBlue('Would you like me to set up a collaborator/spy? [Y/n]'),
                         { defaultInput: 'Y' }
@@ -67,11 +65,10 @@ module.exports = function (grunt) {
                     var type = '';
 
                     answer = readline.question(
-                        chalk.white.bgBlue('Looks like ' + type + ' ' + event.file + ' does not exist, create it now? [Y/n]'),
-                        { defaultInput: 'Y' }
+                        'Looks like ' + type + ' ' + event.file + ' does not exist, create it now? [Y/n]', {defaultInput: 'Y'}
                     );
 
-                    if ((answer.toUpperCase() !== 'N')) {
+                    if ((answer.toUpperCase() === 'Y')) {
                         switch (event.error) {
                             case 'E_NOENT_MODULE':
                                 srcWriter.writeModule(event.file);
@@ -131,7 +128,6 @@ module.exports = function (grunt) {
                 var specFilename = getSpecPath(specName);
 
                 if (grunt.file.exists(specFilename)) {
-
                     var answer = readline.question(
                         chalk.white.bgBlue('The file ' + specFilename + ' already exists, would you like to overwrite it? [y/N]'),
                         { defaultInput: 'N'}
