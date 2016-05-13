@@ -46,8 +46,10 @@ module.exports = function (grunt) {
                     if ((answer.toUpperCase() === 'Y')) {
                         collaboratorWriter.add(event.file);
                         collaboratorWriter.addRequirement(event.file);
-                        grunt.log.writeln(chalk.blue.bgRed.bold(
-                            'Collaborator interface  ' + event.file + ' created.\n' +
+                        grunt.log.writeln(chalk.yellow.bold.bgMagenta(
+                            'Collaborator interface  ' + event.file + ' created.\n'));
+
+                        grunt.log.writeln(chalk.white.bgBlue(
                             'Add the module for whom this collaborator is mocked into requirements.yml\n' +
                             'Add the methods you want to mock for ' + event.file + ' in collaborators.yml\n' +
                             'Run grunt:run again\n'
