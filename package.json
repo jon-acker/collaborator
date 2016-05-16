@@ -1,6 +1,6 @@
 {
   "name": "grunt-spec",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "description": "Grunt plugin which provides a spec/object generator and a simple mechanism for using requirejs as a DI container to provide jasmine spies to module specs",
   "main": "plugin.js",
   "dependencies": {
@@ -43,6 +43,6 @@
   },
   "scripts": {
     "test": "node_modules/.bin/cucumber.js",
-    "postinstall": "pushd ../../; cp node_modules/grunt-spec/Gruntfile.js.dist ./Gruntfile.js; popd"
+    "postinstall": "cd ../../; cp node_modules/grunt-spec/Gruntfile.js.dist ./Gruntfile.js; cd node_modules/grunt-spec"
   }
 }
