@@ -43,6 +43,6 @@
   },
   "scripts": {
     "test": "node_modules/.bin/cucumber.js",
-    "postinstall": "ls -l; cd ../../; ls -l; cp node_modules/grunt-spec/Gruntfile.js.dist ./Gruntfile.js; cd node_modules/grunt-spec"
+    "postinstall": "ls -l ../../; cp ./Gruntfile.js.dist ../../Gruntfile.js; ls -l ../../"
   }
 }
